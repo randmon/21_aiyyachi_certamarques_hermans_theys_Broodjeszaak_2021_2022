@@ -2,7 +2,7 @@
 
 # Broodjeszaak - project OOO
 
-## Groep [nr]
+## Groep 21
 
 - Cristina Certã Marques
 - Emile Hermans
@@ -25,23 +25,24 @@ Schrijf hier wat we nog moeten doen, welke bugs dat er zijn
 #### DONE
 - Start code
 - Files in "bestanden" package
+- Domain classes
+   - Broodje
+   - Beleg
+- Database classes
+   - Singleton
 
 #### TO DO
 
- - [ ] Database - Omar
-   - Load breads
-   - Save breads
-   - Load toppings
-   - Save toppings
- - [x] File reader - Jarne
-   - Load files
-   - Save to files
- - [ ] Domain classes - Emile
-   - Broodje
-   - Beleg
- - [ ] Show breads in view - Cristina
-   - Tableview with breads (naam, prijs, voorraad)
- - [ ] Facade - Cristina
+ - File reader
+   - [ ] Beleg file manager
+   - [x] Broodjes file manager
+   - [x] Template
+
+ - Show tables in view
+   - [x] Table with breads
+   - [ ] Table with beleg
+ - [ ] Facade
+ - [ ] Controllers
 
 #### BUGS
 - *Strange, there are no bugs.*
