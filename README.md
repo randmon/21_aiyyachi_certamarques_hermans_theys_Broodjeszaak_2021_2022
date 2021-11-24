@@ -28,11 +28,20 @@ Schrijf hier wat we nog moeten doen, welke bugs dat er zijn
 
 #### TO DO
 
- - [ ] Example 1
-	 - [x] Example 1.1
-	 - [ ] Example 1.2
-  - Delete this example and replace it with an actual task
-    - Note: this is a note
+ - [ ] Database - Omar
+   - Load breads
+   - Save breads
+   - Load toppings
+   - Save toppings
+ - [ ] File reader - Jarne
+   - Load files
+   - Save to files
+ - [ ] Domain classes - Emile
+   - Broodje
+   - Beleg
+ - [ ] Show breads in view - Cristina
+   - Tableview with breads (naam, prijs, voorraad)
+ - [ ] Facade - Cristina
 
 #### BUGS
 - *Strange, there are no bugs.*
