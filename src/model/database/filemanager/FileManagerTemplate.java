@@ -1,9 +1,20 @@
 package model.database.filemanager;
 
-import java.util.TreeMap;
+import java.util.Set;
 
-//Gebruikt template pattern
 public abstract class FileManagerTemplate<T> {
-    public abstract TreeMap<T, Integer> loadFromFile();
-    public abstract void saveToFile(TreeMap<T, Integer> lijst);
+    protected String path;
+
+    public FileManagerTemplate(String path) {
+        setPath(path);
+    }
+
+    public abstract Set<T> loadFromFile();
+
+    public abstract void saveToFile(Set<T> set);
+
+    public void setPath(String path) {
+        if (path == null || path.isEmpty()) throw new IllegalArgumentException("Path mag niet leeg zijn");
+        this.path = path;
+    }
 }

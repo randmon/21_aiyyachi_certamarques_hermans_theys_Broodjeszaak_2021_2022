@@ -19,10 +19,6 @@ public class OrderView {
 		stage.setY(20);
 		Group root = new Group();
 		Scene scene = new Scene(root, 650, 650);
-
-		TableView<String> table = getTable();
-		root.getChildren().add(table);
-
 		stage.setScene(scene);
 		stage.sizeToScene();			
 		stage.show();
@@ -40,9 +36,5 @@ public class OrderView {
 		table.getColumns().add(column2);
 		table.getColumns().add(column3);
 		return table;
-	}
-
-	public void addBroodjesToTable() {
-		//TODO implement
 	}
 }

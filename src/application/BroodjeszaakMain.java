@@ -10,12 +10,11 @@ import view.OrderView;
 public class BroodjeszaakMain extends Application {
 	@Override
 	public void start(Stage primaryStage) {
-		//AdminView adminView = new AdminView();
+		AdminView adminView = new AdminView();
 		//OrderView orderView = new OrderView();
 		//KitchenView kitchenView = new KitchenView();
 
-		BroodjesDB db = new BroodjesDB();
-		db.save();
+		BroodjesDB db = BroodjesDB.getInstance();
 	}
 	
 	public static void main(String[] args) {

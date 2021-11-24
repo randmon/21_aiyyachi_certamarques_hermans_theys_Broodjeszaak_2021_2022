@@ -2,21 +2,22 @@ package model.database.filemanager;
 
 import model.domain.Beleg;
 
-import java.io.File;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
-public class BelegFileManager extends FileManagerTemplate<Beleg>{
-    String path = "bestanden/beleg.txt";
+public class BelegFileManager extends FileManagerTemplate<Beleg> {
+
+    public BelegFileManager() {
+        super("bestanden/beleg.txt");
+    }
+
     @Override
-    public TreeMap<Beleg, Integer> loadFromFile(){
-        File broodjesFile = new File(path);
-
+    public Set<Beleg> loadFromFile(){
+        //TODO implement
         return null;
     }
 
     @Override
-    public void saveToFile(TreeMap<Beleg, Integer> lijst) {
-
+    public void saveToFile(Set<Beleg> belegSet) {
+        //TODO implement
     }
 }

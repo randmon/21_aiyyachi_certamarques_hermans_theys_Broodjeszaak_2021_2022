@@ -33,7 +33,7 @@ Schrijf hier wat we nog moeten doen, welke bugs dat er zijn
    - Save breads
    - Load toppings
    - Save toppings
- - [ ] File reader - Jarne
+ - [x] File reader - Jarne
    - Load files
    - Save to files
  - [ ] Domain classes - Emile
