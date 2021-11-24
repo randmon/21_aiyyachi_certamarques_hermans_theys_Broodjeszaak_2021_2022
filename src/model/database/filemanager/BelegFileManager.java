@@ -7,7 +7,7 @@ import java.util.*;
 public class BelegFileManager extends FileManagerTemplate<Beleg> {
 
     public BelegFileManager() {
-        super("bestanden/beleg.txt");
+        super("src/bestanden/beleg.txt");
     }
 
     @Override

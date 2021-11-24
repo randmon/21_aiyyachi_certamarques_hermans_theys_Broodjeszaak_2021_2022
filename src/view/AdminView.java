@@ -8,9 +8,9 @@ import javafx.stage.StageStyle;
 import view.panels.AdminMainPane;
 
 public class AdminView {
-	private Stage stage = new Stage();		
-		
-	public AdminView(){			
+	private Stage stage = new Stage();
+
+	public AdminView() {
 		stage.setTitle("ADMIN VIEW");
 		stage.initStyle(StageStyle.UTILITY);
 		stage.setX(680);
