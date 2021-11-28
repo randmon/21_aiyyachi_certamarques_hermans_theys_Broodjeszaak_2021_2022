@@ -1,5 +1,6 @@
 package view.panels;
 
+import controller.Broodjes_BelegViewController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,20 +11,23 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import model.database.BroodjesDB;
+import model.database.DB;
 import model.domain.Broodje;
 import model.domain.Product;
 
 import java.util.ArrayList;
 
 public class SandwichOverviewPane extends GridPane{
-	private final BroodjesDB broodjesDB = BroodjesDB.getInstance();
+	//private final BroodjesDB broodjesDB = BroodjesDB.getInstance();
 	//private final BelegDB belegDB = BelegDB.getInstance();
 	private final TableView<Broodje> broodjesTable = new TableView<>();
 	//private final TableView<Beleg> belegTable = new TableView<>();;
 	private ObservableList<Broodje> broodjesList;
 	//private ObservableList<Beleg> belegList;
+	private Broodjes_BelegViewController controller;
 
-	public SandwichOverviewPane() {
+	public SandwichOverviewPane(Broodjes_BelegViewController controller) {
+		this.controller = controller;
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);
@@ -60,7 +64,7 @@ public class SandwichOverviewPane extends GridPane{
 	}
 
 	public void refreshBroodjes() {
-		broodjesList = FXCollections.observableList(new ArrayList<>(broodjesDB.getAll()));
+		broodjesList = FXCollections.observableList(new ArrayList<>(BroodjesDB.getInstance().getAll()));
 		broodjesTable.setItems(broodjesList);
 		broodjesTable.refresh();
 	}

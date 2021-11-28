@@ -1,5 +1,7 @@
 package application;
 	
+import controller.Broodjes_BelegViewController;
+import facade.BestelFacade;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import view.AdminView;
@@ -10,7 +12,9 @@ public class BroodjeszaakMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		new AdminView();
+		BestelFacade model = new BestelFacade();
+		Broodjes_BelegViewController bCtrl = new Broodjes_BelegViewController(model);
+		new AdminView(bCtrl);
 		new OrderView();
 		new KitchenView();
 	}

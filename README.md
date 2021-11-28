@@ -41,8 +41,8 @@ Schrijf hier wat we nog moeten doen, welke bugs dat er zijn
  - Show tables in view
    - [x] Table with breads
    - [ ] Table with beleg
- - [x] Facade ?
- - [x] Controllers ?
+ - [x] Facade controleren
+ - [x] Controllers controleren
 
 #### BUGS
 - *Strange, there are no bugs.*
