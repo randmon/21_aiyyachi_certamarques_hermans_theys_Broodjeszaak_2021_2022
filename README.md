@@ -34,15 +34,15 @@ Schrijf hier wat we nog moeten doen, welke bugs dat er zijn
 #### TO DO
 
  - File reader
-   - [ ] Beleg file manager
+   - [x] Beleg file manager
    - [x] Broodjes file manager
    - [x] Template
 
  - Show tables in view
    - [x] Table with breads
    - [ ] Table with beleg
- - [ ] Facade
- - [ ] Controllers
+ - [x] Facade ?
+ - [x] Controllers ?
 
 #### BUGS
 - *Strange, there are no bugs.*
