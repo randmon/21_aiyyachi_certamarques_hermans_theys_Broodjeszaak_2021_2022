@@ -10,21 +10,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import model.database.BroodjesDB;
-import model.database.DB;
+import model.domain.Beleg;
 import model.domain.Broodje;
-import model.domain.Product;
-
 import java.util.ArrayList;
 
 public class SandwichOverviewPane extends GridPane{
-	//private final BroodjesDB broodjesDB = BroodjesDB.getInstance();
-	//private final BelegDB belegDB = BelegDB.getInstance();
 	private final TableView<Broodje> broodjesTable = new TableView<>();
-	//private final TableView<Beleg> belegTable = new TableView<>();;
-	private ObservableList<Broodje> broodjesList;
-	//private ObservableList<Beleg> belegList;
-	private Broodjes_BelegViewController controller;
+	private final TableView<Beleg> belegTable = new TableView<>();
+	private final Broodjes_BelegViewController controller;
 
 	public SandwichOverviewPane(Broodjes_BelegViewController controller) {
 		this.controller = controller;
@@ -39,12 +32,13 @@ public class SandwichOverviewPane extends GridPane{
 		this.add(lblBeleg, 1, 0, 1, 1);
 
 		refreshBroodjes();
-		//refreshBeleg();
+		refreshBeleg();
 
 		addCollumnsBroodje(broodjesTable);
+		addCollumnsBeleg(belegTable);
 
 		this.add(broodjesTable, 0, 1, 1, 1);
-		//this.add(belegTable, 1, 1, 1, 1);
+		this.add(belegTable, 1, 1, 1, 1);
 	}
 
 	private void addCollumnsBroodje(TableView<Broodje> table) {
@@ -63,15 +57,31 @@ public class SandwichOverviewPane extends GridPane{
 		table.getColumns().addAll(naam, prijs, voorraad);
 	}
 
+	private void addCollumnsBeleg(TableView<Beleg> table) {
+		TableColumn<Beleg, String> naam = new TableColumn<>("Naam");
+		naam.setPrefWidth(150);
+		naam.setCellValueFactory(new PropertyValueFactory<>("naam"));
+
+		TableColumn<Beleg, Double> prijs = new TableColumn<>("Prijs");
+		prijs.setPrefWidth(80);
+		prijs.setCellValueFactory(new PropertyValueFactory<>("prijs"));
+
+		TableColumn<Beleg, Integer> voorraad = new TableColumn<>("Voorraad");
+		voorraad.setPrefWidth(80);
+		voorraad.setCellValueFactory(new PropertyValueFactory<>("voorraad"));
+
+		table.getColumns().addAll(naam, prijs, voorraad);
+	}
+
 	public void refreshBroodjes() {
-		broodjesList = FXCollections.observableList(new ArrayList<>(BroodjesDB.getInstance().getAll()));
+		ObservableList<Broodje> broodjesList = FXCollections.observableList(new ArrayList<>(controller.getBroodjes()));
 		broodjesTable.setItems(broodjesList);
 		broodjesTable.refresh();
 	}
 
-	/*public void refreshBeleg() {
-		belegList = FXCollections.observableList(new ArrayList<>(belegDB.getAll()));
+	public void refreshBeleg() {
+		ObservableList<Beleg> belegList = FXCollections.observableList(new ArrayList<>(controller.getBeleg()));
 		belegTable.setItems(belegList);
 		belegTable.refresh();
-	}*/
+	}
 }
