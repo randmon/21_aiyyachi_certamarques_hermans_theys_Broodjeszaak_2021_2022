@@ -35,6 +35,8 @@ public class BelegTXTFileManager extends TXTManagerTemplate implements FileManag
                 System.out.println(de.getMessage());
             } catch (NumberFormatException nfe) {
                 System.out.println("Error reading line in " + path);
+            } catch (IndexOutOfBoundsException ibe) {
+                //TODO - delete lege lijnen
             }
         }
         return belegSet;

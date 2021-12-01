@@ -2,14 +2,12 @@ package model.database.filemanager;
 
 import model.domain.Broodje;
 import model.domain.DomainException;
-import utilities.FileManagerTemplate;
 import utilities.TXTManagerTemplate;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class BroodjesTXTFileManager extends TXTManagerTemplate implements FileManagerStrategy<Broodje> {
 

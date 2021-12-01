@@ -1,6 +1,8 @@
 package utilities;
 
 import excel.ExcelPlugin;
+import jxl.read.biff.BiffException;
+import jxl.write.WriteException;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +22,7 @@ public abstract class ExcelManagerTemplate extends FileManagerTemplate {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
         try {
             result =  excelPlugin.read(file);
-        } catch (IOException e) {
+        } catch (IOException | BiffException e) {
             e.printStackTrace();
         }
         return result;
@@ -31,7 +33,7 @@ public abstract class ExcelManagerTemplate extends FileManagerTemplate {
         File file = new File(path);
         try {
             excelPlugin.write(file, list);
-        } catch (IOException e) {
+        } catch (IOException | BiffException | WriteException e) {
             System.out.println("File error!!");
             e.printStackTrace();
         }
