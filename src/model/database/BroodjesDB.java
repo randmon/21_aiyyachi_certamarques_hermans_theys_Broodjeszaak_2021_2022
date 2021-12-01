@@ -1,6 +1,6 @@
 package model.database;
 
-import model.database.filemanager.BroodjesFileManager;
+import model.database.filemanager.BroodjesTXTFileManager;
 import model.domain.Broodje;
 
 import java.util.Comparator;
@@ -10,7 +10,7 @@ public class BroodjesDB extends DB<Broodje> {
     private static BroodjesDB instance;
 
     private BroodjesDB() {
-        super(new BroodjesFileManager(), new TreeSet<>(Comparator.comparing(Broodje::getNaam)));
+        super(new BroodjesTXTFileManager(), new TreeSet<>(Comparator.comparing(Broodje::getNaam)));
     }
 
     //Singleton pattern

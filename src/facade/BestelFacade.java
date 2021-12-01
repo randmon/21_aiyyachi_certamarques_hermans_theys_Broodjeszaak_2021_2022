@@ -21,7 +21,7 @@ public class BestelFacade extends Observable {
     }
 
     public void saveVoorraad() {
-        broodjesDB.saveToFile();
-        belegDB.saveToFile();
+        broodjesDB.save();
+        belegDB.save();
     }
 }

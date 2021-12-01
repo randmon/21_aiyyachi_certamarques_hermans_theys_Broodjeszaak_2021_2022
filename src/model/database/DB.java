@@ -1,28 +1,28 @@
 package model.database;
 
-import model.database.filemanager.FileManagerTemplate;
+import model.database.filemanager.FileManagerStrategy;
 
 import java.util.Set;
 
 public abstract class DB<T> {
-    protected final FileManagerTemplate<T> fileManager;
+    protected final FileManagerStrategy<T> fileManagerStrategy;
     protected final Set<T> items;
 
-    protected DB(FileManagerTemplate<T> fileManager, Set<T> items) {
-        this.fileManager = fileManager;
+    protected DB(FileManagerStrategy<T> fileManager, Set<T> items) {
+        this.fileManagerStrategy = fileManager;
         this.items = items;
-        loadFromFile();
+        load();
     }
 
     public Set<T> getAll() {
         return items;
     }
 
-    public void loadFromFile() {
-        items.addAll(fileManager.loadFromFile());
+    public void load() {
+        items.addAll(fileManagerStrategy.load());
     }
 
-    public void saveToFile() {
-        fileManager.saveToFile(items);
+    public void save() {
+        fileManagerStrategy.save(items);
     }
 }

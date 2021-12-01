@@ -1,6 +1,6 @@
 package model.database;
 
-import model.database.filemanager.BelegFileManager;
+import model.database.filemanager.BelegTXTFileManager;
 import model.domain.Beleg;
 
 import java.util.Comparator;
@@ -10,7 +10,7 @@ public class BelegDB extends DB<Beleg> {
     private static BelegDB instance;
 
     private BelegDB() {
-        super(new BelegFileManager(), new TreeSet<>(Comparator.comparing(Beleg::getNaam)));
+        super(new BelegTXTFileManager(), new TreeSet<>(Comparator.comparing(Beleg::getNaam)));
     }
 
     //Singleton pattern

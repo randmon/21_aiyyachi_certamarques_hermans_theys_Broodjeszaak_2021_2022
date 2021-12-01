@@ -30,19 +30,12 @@ Schrijf hier wat we nog moeten doen, welke bugs dat er zijn
    - Beleg
 - Database classes
    - Singleton
+- Admin view with broodjes / beleg
 
 #### TO DO
 
  - File reader
-   - [x] Beleg file manager
-   - [x] Broodjes file manager
-   - [x] Template
-
- - Show tables in view
-   - [x] Table with breads
-   - [ ] Table with beleg
- - [x] Facade controleren
- - [x] Controllers controleren
+   - [ ] Load excel
 
 #### BUGS
 - *Strange, there are no bugs.*
