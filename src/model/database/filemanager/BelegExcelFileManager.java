@@ -2,22 +2,22 @@ package model.database.filemanager;
 
 import model.domain.Beleg;
 import model.domain.DomainException;
-import utilities.TXTManagerTemplate;
+import utilities.ExcelManagerTemplate;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class BelegTXTFileManager extends TXTManagerTemplate implements FileManagerStrategy<Beleg> {
+public class BelegExcelFileManager extends ExcelManagerTemplate implements FileManagerStrategy<Beleg> {
 
-    public BelegTXTFileManager() {
-        super("src/bestanden/beleg.txt");
+    public BelegExcelFileManager() {
+        super("src/bestanden/beleg.xls");
     }
 
     @Override
-    public Set<Beleg> load(){
-        Set<Beleg> belegSet = new TreeSet<>(Comparator.comparing(Beleg::getNaam));
+    public Set<Beleg> load() {
+        Set<Beleg> beleg = new TreeSet<>(Comparator.comparing(Beleg::getNaam));
         ArrayList<ArrayList<String>> list = this.loadFromFile();
 
         for (ArrayList<String> params : list) {
@@ -27,16 +27,14 @@ public class BelegTXTFileManager extends TXTManagerTemplate implements FileManag
                 int voorraad = Integer.parseInt(params.get(2));
                 int besteld = Integer.parseInt(params.get(3));
 
-                belegSet.add(new Beleg(naam, prijs, voorraad, besteld));
+                beleg.add(new Beleg(naam, prijs, voorraad, besteld));
             } catch (DomainException de) {
                 System.out.println(de.getMessage());
             } catch (NumberFormatException nfe) {
                 System.out.println("Error reading line in " + path);
-            } catch (IndexOutOfBoundsException ibe) {
-                //TODO - delete lege lijnen
             }
         }
-        return belegSet;
+        return beleg;
     }
 
     @Override

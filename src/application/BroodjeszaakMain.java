@@ -8,7 +8,10 @@ import view.KitchenView;
 import view.OrderView;
 
 public class BroodjeszaakMain extends Application {
-	Broodjes_BelegViewController bCtrl = new Broodjes_BelegViewController();
+	//String chooseFile = "TXT";
+	String chooseFile = "EXCEL";
+
+	Broodjes_BelegViewController bCtrl = new Broodjes_BelegViewController(chooseFile);
 
 	public static void main(String[] args) {
 		launch(args);

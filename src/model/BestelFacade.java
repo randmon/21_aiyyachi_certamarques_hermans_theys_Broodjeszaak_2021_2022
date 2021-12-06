@@ -1,4 +1,4 @@
-package facade;
+package model;
 
 import model.database.BroodjesDB;
 import model.database.BelegDB;
@@ -9,8 +9,13 @@ import java.util.Observable;
 import java.util.Set;
 
 public class BestelFacade extends Observable {
-    BroodjesDB broodjesDB = BroodjesDB.getInstance();
-    BelegDB belegDB = BelegDB.getInstance();
+    BroodjesDB broodjesDB;
+    BelegDB belegDB;
+
+    public BestelFacade(String fileType) {
+        broodjesDB = BroodjesDB.getInstance(fileType);
+        belegDB = BelegDB.getInstance(fileType);
+    }
 
     public Set<Broodje> getBroodjes() {
         return broodjesDB.getAll();

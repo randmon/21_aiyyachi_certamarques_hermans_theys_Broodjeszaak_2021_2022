@@ -1,6 +1,6 @@
 package controller;
 
-import facade.BestelFacade;
+import model.BestelFacade;
 import model.domain.Beleg;
 import model.domain.Broodje;
 import view.panels.SandwichOverviewPane;
@@ -13,8 +13,8 @@ public class Broodjes_BelegViewController implements Observer {
     private final BestelFacade model;
     private SandwichOverviewPane view;
 
-    public Broodjes_BelegViewController() {
-        this.model = new BestelFacade();
+    public Broodjes_BelegViewController(String fileType) {
+        this.model = new BestelFacade(fileType);
         this.model.addObserver(this);
     }
 

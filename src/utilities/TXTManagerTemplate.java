@@ -48,6 +48,7 @@ public abstract class TXTManagerTemplate extends FileManagerTemplate {
                         line.get(0) + "," + line.get(1) + "," + line.get(2) + "," + line.get(3)+ "\n"
                 );
             }
+            writer.close();
         } catch (IOException e) {
             System.out.println("File error!!");
             e.printStackTrace();
