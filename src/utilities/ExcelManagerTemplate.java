@@ -22,6 +22,7 @@ public abstract class ExcelManagerTemplate extends FileManagerTemplate {
         ArrayList<ArrayList<String>> result = new ArrayList<>();
         try {
             result =  excelPlugin.read(file);
+            System.out.println("Successfully loaded " + result.size() + " products from " + path);
         } catch (IOException | BiffException e) {
             e.printStackTrace();
         }

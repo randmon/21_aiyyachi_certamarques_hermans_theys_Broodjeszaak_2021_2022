@@ -5,9 +5,9 @@ import model.domain.DomainException;
 import utilities.TXTManagerTemplate;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
+
 
 public class BelegTXTFileManager extends TXTManagerTemplate implements FileManagerStrategy<Beleg> {
 
@@ -16,8 +16,8 @@ public class BelegTXTFileManager extends TXTManagerTemplate implements FileManag
     }
 
     @Override
-    public Set<Beleg> load(){
-        Set<Beleg> belegSet = new TreeSet<>(Comparator.comparing(Beleg::getNaam));
+    public Map<String, Beleg> load(){
+        Map<String, Beleg> belegMap = new TreeMap<>();
         ArrayList<ArrayList<String>> list = this.loadFromFile();
 
         for (ArrayList<String> params : list) {
@@ -27,7 +27,7 @@ public class BelegTXTFileManager extends TXTManagerTemplate implements FileManag
                 int voorraad = Integer.parseInt(params.get(2));
                 int besteld = Integer.parseInt(params.get(3));
 
-                belegSet.add(new Beleg(naam, prijs, voorraad, besteld));
+                belegMap.put(naam, new Beleg(naam, prijs, voorraad, besteld));
             } catch (DomainException de) {
                 System.out.println(de.getMessage());
             } catch (NumberFormatException nfe) {
@@ -36,15 +36,16 @@ public class BelegTXTFileManager extends TXTManagerTemplate implements FileManag
                 //TODO - delete lege lijnen
             }
         }
-        return belegSet;
+        return belegMap;
     }
 
     @Override
-    public void save(Set<Beleg> belegSet) {
+    public void save(Map<String, Beleg> belegMap) {
         ArrayList<ArrayList<String>> list = new ArrayList<>();
-        for(Beleg b : belegSet){
+        for(Map.Entry<String, Beleg> entry : belegMap.entrySet()){
             ArrayList<String> result = new ArrayList<>();
-            result.add(b.getNaam());
+            Beleg b = entry.getValue();
+            result.add(entry.getKey());
             result.add(String.valueOf(b.getPrijs()));
             result.add(String.valueOf(b.getVoorraad()));
             result.add(String.valueOf(b.getBesteld()));

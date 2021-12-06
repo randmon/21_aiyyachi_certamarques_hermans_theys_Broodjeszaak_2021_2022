@@ -3,8 +3,7 @@ package model.database;
 import model.database.filemanager.BroodjesFileManagerStrategyFactory;
 import model.domain.Broodje;
 
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.TreeMap;
 
 public class BroodjesDB extends DB<Broodje> {
     private static BroodjesDB instance;
@@ -12,7 +11,8 @@ public class BroodjesDB extends DB<Broodje> {
     private BroodjesDB(String fileType) {
         super(
                 BroodjesFileManagerStrategyFactory.getInstance().createBroodjesStrategy(fileType),
-                new TreeSet<>(Comparator.comparing(Broodje::getNaam)));
+                new TreeMap<>()
+        );
     }
 
     //Singleton pattern

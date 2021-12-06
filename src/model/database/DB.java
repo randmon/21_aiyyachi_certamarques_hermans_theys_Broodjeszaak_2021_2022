@@ -2,24 +2,24 @@ package model.database;
 
 import model.database.filemanager.FileManagerStrategy;
 
-import java.util.Set;
+import java.util.Map;
 
 public abstract class DB<T> {
     protected final FileManagerStrategy<T> fileManagerStrategy;
-    protected final Set<T> items;
+    protected final Map<String, T> items;
 
-    protected DB(FileManagerStrategy<T> fileManager, Set<T> items) {
+    protected DB(FileManagerStrategy<T> fileManager, Map<String, T> items) {
         this.fileManagerStrategy = fileManager;
         this.items = items;
         load();
     }
 
-    public Set<T> getAll() {
+    public Map<String, T> getAll() {
         return items;
     }
 
     public void load() {
-        items.addAll(fileManagerStrategy.load());
+        items.putAll(fileManagerStrategy.load());
     }
 
     public void save() {

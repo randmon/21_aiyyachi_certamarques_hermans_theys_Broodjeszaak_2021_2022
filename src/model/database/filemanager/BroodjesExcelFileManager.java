@@ -5,9 +5,8 @@ import model.domain.DomainException;
 import utilities.ExcelManagerTemplate;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class BroodjesExcelFileManager extends ExcelManagerTemplate implements FileManagerStrategy<Broodje> {
 
@@ -16,8 +15,8 @@ public class BroodjesExcelFileManager extends ExcelManagerTemplate implements Fi
     }
 
     @Override
-    public Set<Broodje> load() {
-        Set<Broodje> broodjes = new TreeSet<>(Comparator.comparing(Broodje::getNaam));
+    public Map<String, Broodje> load() {
+        Map<String, Broodje> broodjes = new TreeMap<>();
         ArrayList<ArrayList<String>> list = this.loadFromFile();
 
         for (ArrayList<String> params : list) {
@@ -27,7 +26,7 @@ public class BroodjesExcelFileManager extends ExcelManagerTemplate implements Fi
                 int voorraad = Integer.parseInt(params.get(2));
                 int besteld = Integer.parseInt(params.get(3));
 
-                broodjes.add(new Broodje(naam, prijs, voorraad, besteld));
+                broodjes.put(naam, new Broodje(naam, prijs, voorraad, besteld));
             } catch (DomainException de) {
                 System.out.println(de.getMessage());
             } catch (NumberFormatException nfe) {
@@ -38,11 +37,12 @@ public class BroodjesExcelFileManager extends ExcelManagerTemplate implements Fi
     }
 
     @Override
-    public void save(Set<Broodje> broodjes) {
+    public void save(Map<String, Broodje> broodjes) {
         ArrayList<ArrayList<String>> list = new ArrayList<>();
-        for(Broodje b : broodjes){
+        for(Map.Entry<String, Broodje> entry : broodjes.entrySet()){
             ArrayList<String> result = new ArrayList<>();
-            result.add(b.getNaam());
+            Broodje b = entry.getValue();
+            result.add(entry.getKey());
             result.add(String.valueOf(b.getPrijs()));
             result.add(String.valueOf(b.getVoorraad()));
             result.add(String.valueOf(b.getBesteld()));

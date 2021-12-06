@@ -13,6 +13,8 @@ import javafx.scene.text.Font;
 import model.domain.Beleg;
 import model.domain.Broodje;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SandwichOverviewPane extends GridPane{
 	private final TableView<Broodje> broodjesTable = new TableView<>();
@@ -74,13 +76,13 @@ public class SandwichOverviewPane extends GridPane{
 	}
 
 	public void refreshBroodjes() {
-		ObservableList<Broodje> broodjesList = FXCollections.observableList(new ArrayList<>(controller.getBroodjes()));
+		ObservableList<Broodje> broodjesList = FXCollections.observableList(new ArrayList<>(controller.getBroodjes().values()));
 		broodjesTable.setItems(broodjesList);
 		broodjesTable.refresh();
 	}
 
 	public void refreshBeleg() {
-		ObservableList<Beleg> belegList = FXCollections.observableList(new ArrayList<>(controller.getBeleg()));
+		ObservableList<Beleg> belegList = FXCollections.observableList(new ArrayList<>(controller.getBeleg().values()));
 		belegTable.setItems(belegList);
 		belegTable.refresh();
 	}

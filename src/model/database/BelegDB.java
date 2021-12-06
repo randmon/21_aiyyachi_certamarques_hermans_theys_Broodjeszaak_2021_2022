@@ -3,8 +3,7 @@ package model.database;
 import model.database.filemanager.BelegFileManagerStrategyFactory;
 import model.domain.Beleg;
 
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.TreeMap;
 
 public class BelegDB extends DB<Beleg> {
     private static BelegDB instance;
@@ -12,7 +11,8 @@ public class BelegDB extends DB<Beleg> {
     private BelegDB(String fileType) {
         super(
                 BelegFileManagerStrategyFactory.getInstance().createBelegStrategy(fileType),
-                new TreeSet<>(Comparator.comparing(Beleg::getNaam)));
+                new TreeMap<>()
+        );
     }
 
     //Singleton pattern

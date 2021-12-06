@@ -1,12 +1,12 @@
 package model;
 
-import model.database.BroodjesDB;
 import model.database.BelegDB;
+import model.database.BroodjesDB;
 import model.domain.Beleg;
 import model.domain.Broodje;
 
+import java.util.Map;
 import java.util.Observable;
-import java.util.Set;
 
 public class BestelFacade extends Observable {
     BroodjesDB broodjesDB;
@@ -17,11 +17,11 @@ public class BestelFacade extends Observable {
         belegDB = BelegDB.getInstance(fileType);
     }
 
-    public Set<Broodje> getBroodjes() {
+    public Map<String, Broodje> getBroodjes() {
         return broodjesDB.getAll();
     }
 
-    public Set<Beleg> getBeleg() {
+    public Map<String, Beleg> getBeleg() {
         return belegDB.getAll();
     }
 

@@ -5,9 +5,9 @@ import model.domain.Beleg;
 import model.domain.Broodje;
 import view.panels.SandwichOverviewPane;
 
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 
 public class Broodjes_BelegViewController implements Observer {
     private final BestelFacade model;
@@ -18,11 +18,11 @@ public class Broodjes_BelegViewController implements Observer {
         this.model.addObserver(this);
     }
 
-    public Set<Broodje> getBroodjes() {
+    public Map<String, Broodje> getBroodjes() {
         return model.getBroodjes();
     }
 
-    public Set<Beleg> getBeleg() {
+    public Map<String, Beleg> getBeleg() {
         return model.getBeleg();
     }
 

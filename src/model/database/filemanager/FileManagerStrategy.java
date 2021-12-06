@@ -1,8 +1,8 @@
 package model.database.filemanager;
 
-import java.util.Set;
+import java.util.Map;
 
 public interface FileManagerStrategy<T> {
-    Set<T> load();
-    void save(Set<T> items);
+    Map<String, T> load();
+    void save(Map<String, T> items);
 }
