@@ -1,6 +1,6 @@
 package view.panels;
 
-import controller.Broodjes_BelegViewController;
+import controller.AdminViewController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -13,15 +13,13 @@ import javafx.scene.text.Font;
 import model.domain.Beleg;
 import model.domain.Broodje;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class SandwichOverviewPane extends GridPane{
 	private final TableView<Broodje> broodjesTable = new TableView<>();
 	private final TableView<Beleg> belegTable = new TableView<>();
-	private final Broodjes_BelegViewController controller;
+	private final AdminViewController controller;
 
-	public SandwichOverviewPane(Broodjes_BelegViewController controller) {
+	public SandwichOverviewPane(AdminViewController controller) {
 		this.controller = controller;
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);

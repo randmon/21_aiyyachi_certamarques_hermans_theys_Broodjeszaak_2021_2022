@@ -9,12 +9,12 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Broodjes_BelegViewController implements Observer {
+public class AdminViewController implements Observer {
     private final BestelFacade model;
     private SandwichOverviewPane view;
 
-    public Broodjes_BelegViewController(String fileType) {
-        this.model = new BestelFacade(fileType);
+    public AdminViewController(BestelFacade model) {
+        this.model = model;
         this.model.addObserver(this);
     }
 

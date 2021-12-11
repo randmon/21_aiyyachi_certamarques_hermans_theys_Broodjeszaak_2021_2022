@@ -1,7 +1,7 @@
 feta,0.5,10,0
 hesp,0.45,5,0
 kaas,0.4,5,0
-komkommer,0.3,10,0
+komkommer,0.3,0,0
 olijven,0.25,10,0
 sla,0.2,10,0
 tomaat,0.35,10,0

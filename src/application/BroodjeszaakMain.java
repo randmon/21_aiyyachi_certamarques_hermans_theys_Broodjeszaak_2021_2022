@@ -1,17 +1,22 @@
 package application;
 
-import controller.Broodjes_BelegViewController;
+import controller.AdminViewController;
+import controller.OrderViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import model.BestelFacade;
 import view.AdminView;
 import view.KitchenView;
 import view.OrderView;
 
 public class BroodjeszaakMain extends Application {
-	//String chooseFile = "TXT";
-	String chooseFile = "EXCEL";
+	String chooseFile = "TXT";
+	//String chooseFile = "EXCEL";
 
-	Broodjes_BelegViewController bCtrl = new Broodjes_BelegViewController(chooseFile);
+	BestelFacade model = new BestelFacade(chooseFile);
+
+	AdminViewController bCtrl = new AdminViewController(model);
+	OrderViewController oCtrl = new OrderViewController(model);
 
 	public static void main(String[] args) {
 		launch(args);
@@ -20,7 +25,7 @@ public class BroodjeszaakMain extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		new AdminView(bCtrl);
-		new OrderView();
+		new OrderView(oCtrl);
 		new KitchenView();
 	}
 

@@ -1,12 +1,12 @@
 package view.panels;
 
-import controller.Broodjes_BelegViewController;
+import controller.AdminViewController;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 
 public class AdminMainPane extends BorderPane {
-	public AdminMainPane(Broodjes_BelegViewController controller){
+	public AdminMainPane(AdminViewController controller){
 	    TabPane tabPane = new TabPane();
         SandwichOverviewPane sandwichOverviewPane = new SandwichOverviewPane(controller);
         Tab broodjesTab = new Tab("Broodjes/Beleg",sandwichOverviewPane);
