@@ -2,6 +2,7 @@ package view.panels;
 
 import controller.AdminViewController;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -30,6 +31,9 @@ public class StatisticsPane extends GridPane {
         broodjesData.getData().add(new XYChart.Data<>(13, "brood3"));
         broodjesChart.getData().add(broodjesData);
         broodjesChart.setLegendVisible(false);
+        for(Node n:broodjesChart.lookupAll(".default-color0.chart-bar")) {
+            n.setStyle("-fx-bar-fill: LIGHTBLUE;");
+        }
         this.add(broodjesChart, 0, 0, 1, 1);
 
         //BELEG
@@ -48,6 +52,9 @@ public class StatisticsPane extends GridPane {
         belegData.getData().add(new XYChart.Data<>(16, "beleg7"));
         belegChart.getData().add(belegData);
         belegChart.setLegendVisible(false);
+        for(Node n:belegChart.lookupAll(".default-color0.chart-bar")) {
+            n.setStyle("-fx-bar-fill: ORANGE;");
+        }
         this.add(belegChart, 1, 0, 1, 1);
     }
 

@@ -87,9 +87,10 @@ public class BestelFacade extends Observable {
         notifyObservers(BestellingEvent.ADD_SAME_BROODJE);
     }
 
-    public void deleteItem(Item itemToDelete) {
-        bestelling.deleteBroodje(itemToDelete);
-
+    public void deleteItem(Item item) {
+        bestelling.deleteBroodje(item);
+        broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad()+1);
+        for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad()+1);
         setChanged();
         notifyObservers(BestellingEvent.REMOVE_BROODJE);
     }

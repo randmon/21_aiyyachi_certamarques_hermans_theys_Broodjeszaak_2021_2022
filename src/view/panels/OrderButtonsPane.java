@@ -71,7 +71,7 @@ public class OrderButtonsPane extends VBox {
             });
 
             button.setCursor(Cursor.HAND);
-            button.setBackground(new Background(new BackgroundFill(Color.YELLOW,
+            button.setBackground(new Background(new BackgroundFill(Color.ORANGE,
                     new CornerRadii(5),
                     Insets.EMPTY)));
             belegButtons.getChildren().add(button);
