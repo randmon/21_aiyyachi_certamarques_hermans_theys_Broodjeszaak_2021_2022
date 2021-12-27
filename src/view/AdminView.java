@@ -10,8 +10,10 @@ import view.panels.AdminMainPane;
 
 public class AdminView {
 	private Stage stage = new Stage();
+	private AdminViewController controller;
 
 	public AdminView(AdminViewController controller) {
+		this.controller = controller;
 		stage.setTitle("ADMIN VIEW");
 		stage.initStyle(StageStyle.UTILITY);
 		stage.setX(680);

@@ -1,6 +1,7 @@
 package application;
 
 import controller.AdminViewController;
+import controller.KitchenViewController;
 import controller.OrderViewController;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -17,6 +18,7 @@ public class BroodjeszaakMain extends Application {
 
 	AdminViewController bCtrl = new AdminViewController(model);
 	OrderViewController oCtrl = new OrderViewController(model);
+	KitchenViewController kCtrl = new KitchenViewController(model);
 
 	public static void main(String[] args) {
 		launch(args);
@@ -26,7 +28,7 @@ public class BroodjeszaakMain extends Application {
 	public void start(Stage primaryStage) {
 		new AdminView(bCtrl);
 		new OrderView(oCtrl);
-		new KitchenView();
+		new KitchenView(kCtrl);
 	}
 
 	@Override

@@ -21,13 +21,13 @@ import view.panels.OrderButtonsPane;
 
 public class OrderView {
 	private Stage stage = new Stage();
+	private OrderViewController controller;
 	private final GridPane grid = new GridPane();
 	private Button newOrderButton, closeOrderButton, payButton, toKitchenButton;
 	private Label volgnrLabel, prijsLabel;
 	private ChoiceBox<String> kortingChoice;
 	private HBox kortingHBox;
 	private OrderButtonsPane orderButtons;
-	private OrderViewController controller;
 	private BestellingTablePane bestellingTablePane;
 
 	public OrderView(OrderViewController controller){
