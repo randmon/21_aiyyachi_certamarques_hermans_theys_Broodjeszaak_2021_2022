@@ -177,6 +177,5 @@ public class OrderView {
 	public void refreshOrder() {
 		orderButtons.refreshButtons();
 		bestellingTablePane.refreshTable();
-
 	}
 }

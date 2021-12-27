@@ -2,9 +2,10 @@ package controller;
 
 import model.BestelFacade;
 import model.domain.Beleg;
-import model.domain.Bestelling;
 import model.domain.Broodje;
 import model.domain.Item;
+import model.domain.bestelling.Bestelling;
+import model.domain.bestelling.BestellingEvent;
 import view.OrderView;
 
 import java.util.*;
@@ -24,7 +25,11 @@ public class OrderViewController implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        view.refreshOrder();
+        BestellingEvent event = (BestellingEvent) arg;
+        if (event == null) return;
+        if (event.equals(BestellingEvent.ADD_BROODJE) || event.equals(BestellingEvent.ADD_BELEG)) {
+            view.refreshOrder();
+        }
     }
 
     public List<Broodje> getBroodjes() {
@@ -46,7 +51,7 @@ public class OrderViewController implements Observer {
         return model.getOrderID();
     }
 
-    public void addNewItem(Broodje b) {
+    public void addBroodje(Broodje b) {
         model.addNewItem(b);
     }
 
@@ -55,6 +60,6 @@ public class OrderViewController implements Observer {
     }
 
     public void addBelegToItem(Item item, Beleg beleg) {
-        model.getBestelling().addBeleg(item, beleg);
+        model.addBeleg(item, beleg);
     }
 }

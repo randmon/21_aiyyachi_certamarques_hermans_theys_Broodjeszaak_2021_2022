@@ -54,6 +54,6 @@ public abstract class Product {
 
     @Override
     public String toString() {
-        return getNaam() + "," + getPrijs() + "," + getVoorraad() + "," + getBesteld();
+        return getNaam();
     }
 }

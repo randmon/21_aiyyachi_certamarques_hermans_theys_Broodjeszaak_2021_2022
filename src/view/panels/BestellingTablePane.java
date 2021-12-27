@@ -15,7 +15,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.domain.Beleg;
-import model.domain.Bestelling;
 import model.domain.Broodje;
 import model.domain.Item;
 
@@ -81,7 +80,7 @@ public class BestellingTablePane extends VBox {
         table.getColumns().add(broodje);
 
         TableColumn<Item, List<Beleg>> beleg = new TableColumn<>("Beleg");
-        beleg.setPrefWidth(300);
+        beleg.setMinWidth(300);
         beleg.setCellValueFactory(new PropertyValueFactory<>("beleg"));
         table.getColumns().add(beleg);
     }

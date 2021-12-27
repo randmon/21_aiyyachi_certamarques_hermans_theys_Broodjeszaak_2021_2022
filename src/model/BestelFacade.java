@@ -2,10 +2,9 @@ package model;
 
 import model.database.BelegDB;
 import model.database.BroodjesDB;
-import model.domain.Beleg;
-import model.domain.Bestelling;
-import model.domain.Broodje;
-import model.domain.DomainException;
+import model.domain.*;
+import model.domain.bestelling.Bestelling;
+import model.domain.bestelling.BestellingEvent;
 
 import java.util.Map;
 import java.util.Observable;
@@ -49,7 +48,7 @@ public class BestelFacade extends Observable {
             bestelling.addBroodje(b);
             broodjesDB.setVoorraad(b, b.getVoorraad()-1);
             setChanged();
-            notifyObservers();
+            notifyObservers(BestellingEvent.ADD_BROODJE);
         } catch (DomainException d) {
             System.out.println(d.getMessage());
         }
@@ -57,5 +56,13 @@ public class BestelFacade extends Observable {
 
     public Bestelling getBestelling() {
         return bestelling;
+    }
+
+    public void addBeleg(Item item, Beleg beleg) {
+        if (item == null) return;
+        item.addBeleg(beleg);
+        belegDB.setVoorraad(beleg, beleg.getVoorraad()-1);
+        setChanged();
+        notifyObservers(BestellingEvent.ADD_BELEG);
     }
 }

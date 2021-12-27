@@ -1,4 +1,9 @@
-package model.domain;
+package model.domain.bestelling;
+
+import model.domain.Beleg;
+import model.domain.Broodje;
+import model.domain.DomainException;
+import model.domain.Item;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -10,11 +15,15 @@ public class Bestelling {
     private final int id;
     private int nextItemID;
     private final Map<Integer, Item> items;
+    private BestellingContext context;
 
     public Bestelling(int id, Map<Integer, Item> items) {
         this.id = id;
         this.items = items;
         nextItemID = -1;
+        context = new BestellingContext();
+        context.setState(new InBestelling());
+        context.getState().doAction(context);
     }
 
     public Bestelling(int id) {

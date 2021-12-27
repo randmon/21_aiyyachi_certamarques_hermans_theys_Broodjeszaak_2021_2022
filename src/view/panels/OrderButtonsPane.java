@@ -5,7 +5,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import model.domain.Beleg;
@@ -47,7 +46,7 @@ public class OrderButtonsPane extends VBox {
                Button button = new Button(broodje.getNaam());
 
                button.setOnAction(event -> {
-                   controller.addNewItem(broodje);
+                   controller.addBroodje(broodje);
                    bestellingTablePane.selectLast();
                });
 
@@ -62,11 +61,14 @@ public class OrderButtonsPane extends VBox {
         for(Beleg beleg : belegList){
             Button button = new Button(beleg.getNaam());
 
-            //Get selected item in the table
-            Item selectedItem = bestellingTablePane.getSelectedItem();
 
             //Add to the Item object in that line the beleg that we clicked on
-            button.setOnAction(event -> controller.addBelegToItem(selectedItem, beleg));
+            button.setOnAction(event -> {
+                //Get selected item in the table
+                Item selectedItem = bestellingTablePane.getSelectedItem();
+
+                controller.addBelegToItem(selectedItem, beleg);
+            });
 
             button.setCursor(Cursor.HAND);
             button.setBackground(new Background(new BackgroundFill(Color.YELLOW,
