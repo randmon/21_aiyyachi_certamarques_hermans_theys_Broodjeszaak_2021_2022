@@ -2,7 +2,6 @@ package view;
 
 import controller.OrderViewController;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -159,10 +158,8 @@ public class OrderView {
 		//Disable start order button
 		newOrderButton.setDisable(true);
 
-		//Enable alle andere buttons
+		//Enable other buttons
 		closeOrderButton.setDisable(false);
-		//payButton.setDisable(false);
-		//toKitchenButton.setDisable(false);
 		kortingHBox.setDisable(false);
 		orderButtons.refreshButtons();
 		bestellingTablePane.disableButtons(false);
@@ -185,8 +182,15 @@ public class OrderView {
 		double price = controller.calculatePrice();
 		prijsLabel.setText("€ " + Math.round(price * 100.0) / 100.0);
 
-
-		//Set pay button active
+		//Enable pay button
 		payButton.setDisable(false);
+
+		//Disable other buttons
+		closeOrderButton.setDisable(true);
+		kortingHBox.setDisable(true);
+		orderButtons.disableButtons(true);
+		bestellingTablePane.disableButtons(true);
+		bestellingTablePane.getCancelOrderButton().setDisable(false);
+
 	}
 }

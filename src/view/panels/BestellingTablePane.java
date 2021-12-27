@@ -18,7 +18,6 @@ import model.domain.Item;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class BestellingTablePane extends VBox {
     private final OrderViewController controller;
@@ -65,6 +64,7 @@ public class BestellingTablePane extends VBox {
         deleteItem = new Button("Verwijder broodje");
         deleteItem.setCursor(Cursor.HAND);
         topVBox.getChildren().add(deleteItem);
+        deleteItem.setOnAction(event -> deleteItem());
 
         cancelOrder = new Button("Annuleer bestelling");
         cancelOrder.setCursor(Cursor.HAND);
@@ -90,7 +90,7 @@ public class BestellingTablePane extends VBox {
             table.setItems(FXCollections.observableList(new ArrayList<>()));
             aantalBroodjes.setText("Aantal broodjes: 0");
         } else {
-            ObservableList<Item> items = FXCollections.observableList(new ArrayList<>(controller.getBestelling().getItems().values()));
+            ObservableList<Item> items = FXCollections.observableList(new ArrayList<>(controller.getBestelling().getItems()));
             table.setItems(items);
             aantalBroodjes.setText("Aantal broodjes: " + controller.getBestelling().getItems().size());
         }
@@ -101,6 +101,10 @@ public class BestellingTablePane extends VBox {
         addSameItem.setDisable(disabled);
         deleteItem.setDisable(disabled);
         cancelOrder.setDisable(disabled);
+    }
+
+    public Button getCancelOrderButton(){
+        return cancelOrder;
     }
 
     public Item getSelectedItem() {
@@ -122,10 +126,11 @@ public class BestellingTablePane extends VBox {
             alert.setTitle("Error Message");
             alert.showAndWait();
         }
+    }
 
-        //Refresh table with broodje
-        refreshTable();
-        selectLast();
+    private void deleteItem() {
+        Item itemToDelete = getSelectedItem();
+        controller.deleteItem(itemToDelete);
     }
 
 }

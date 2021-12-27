@@ -1,5 +1,7 @@
 package model.domain.bestelling;
 
+import model.domain.bestelling.bestellingStates.BestellingState;
+
 public class BestellingContext {
     private BestellingState state;
 

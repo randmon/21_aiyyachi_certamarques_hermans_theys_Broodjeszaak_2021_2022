@@ -4,44 +4,38 @@ import model.domain.Beleg;
 import model.domain.Broodje;
 import model.domain.DomainException;
 import model.domain.Item;
+import model.domain.bestelling.bestellingStates.InWacht;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Een bestelling mag meerdere items bevatten.
  * */
 public class Bestelling {
-    private final int id;
-    private int nextItemID;
-    private final Map<Integer, Item> items;
+    private final Set<Item> items;
     private BestellingContext context;
-
-    public Bestelling(int id, Map<Integer, Item> items) {
-        this.id = id;
-        this.items = items;
-        nextItemID = -1;
-        context = new BestellingContext();
-        context.setState(new InBestelling());
-        context.getState().doAction(context);
-    }
+    private final int id;
 
     public Bestelling(int id) {
-        this(id, new TreeMap<>());
+        this.id = id;
+        this.items = new LinkedHashSet<>();
+        context = new BestellingContext();
+        context.setState(new InWacht());
+        context.getState().doAction(context);
     }
 
     public int getId() {
         return id;
     }
 
-    public Map<Integer, Item> getItems() {
+    public Set<Item> getItems() {
         return items;
     }
 
     public void addBroodje(Broodje broodje) {
         if (broodje.getVoorraad() < 1) throw new DomainException(broodje.getNaam() + " broodje is niet meer in voorraad!");
 
-        items.put(getNextItemID(), new Item(broodje, new ArrayList<>()));
+        items.add(new Item(broodje, new ArrayList<>()));
     }
 
     public void addBeleg(Item item, Beleg beleg) {
@@ -68,15 +62,10 @@ public class Bestelling {
             }
         }
 
-        items.put(getNextItemID(), item);
+        items.add(item);
     }
 
-    public void deleteBroodje(int itemID) {
-        items.remove(itemID);
-    }
-
-    private int getNextItemID() {
-        nextItemID++;
-        return nextItemID;
+    public void deleteBroodje(Item item) {
+        items.remove(item);
     }
 }
