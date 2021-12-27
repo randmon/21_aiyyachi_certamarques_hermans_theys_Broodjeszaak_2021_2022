@@ -9,9 +9,13 @@ public class AdminMainPane extends BorderPane {
 	public AdminMainPane(AdminViewController controller){
 	    TabPane tabPane = new TabPane();
         SandwichOverviewPane sandwichOverviewPane = new SandwichOverviewPane(controller);
-        Tab broodjesTab = new Tab("Broodjes/Beleg",sandwichOverviewPane);
+        Tab broodjesTab = new Tab("Broodjes/Beleg", sandwichOverviewPane);
+
+        StatisticsPane statisticsPane = new StatisticsPane(controller);
+        Tab statistiekTab = new Tab("Statistieken", statisticsPane);
+
         Tab instellingTab = new Tab("Instellingen");
-        Tab statistiekTab = new Tab("Statistieken");
+
         tabPane.getTabs().add(broodjesTab);
         tabPane.getTabs().add(statistiekTab);
         tabPane.getTabs().add(instellingTab);

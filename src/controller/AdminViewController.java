@@ -30,6 +30,8 @@ public class AdminViewController implements Observer {
         return model.getBeleg();
     }
 
+
+
     @Override
     public void update(Observable o, Object arg) {
         //Update tables in view
