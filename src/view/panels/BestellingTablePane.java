@@ -20,6 +20,7 @@ import model.domain.Broodje;
 import model.domain.Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BestellingTablePane extends VBox {
     private final OrderViewController controller;
@@ -69,40 +70,45 @@ public class BestellingTablePane extends VBox {
         cancelOrder = new Button("Annuleer bestelling");
         cancelOrder.setCursor(Cursor.HAND);
         sideOptions.setBottom(cancelOrder);
+
+        disableButtons(true);
     }
 
     public void addCollumnsToTable() {
-        TableColumn<Item, String> broodje = new TableColumn<>("Broodje");
+        TableColumn<Item, Broodje> broodje = new TableColumn<>("Broodje");
         broodje.setPrefWidth(100);
         broodje.setCellValueFactory(new PropertyValueFactory<>("broodje"));
         table.getColumns().add(broodje);
 
-        TableColumn<Item, String> beleg = new TableColumn<>("Beleg");
+        TableColumn<Item, List<Beleg>> beleg = new TableColumn<>("Beleg");
         beleg.setPrefWidth(300);
         beleg.setCellValueFactory(new PropertyValueFactory<>("beleg"));
         table.getColumns().add(beleg);
     }
 
     public void refreshTable() {
-
-        //TODO this will be replaced with actual order data
-        //-----Test rows-----
-        Bestelling bestelling = new Bestelling(99);
-
-        bestelling.addBroodje(new Broodje("Broodje 1", 1, 1, 1)); //0
-        bestelling.addBroodje(new Broodje("Broodje 2", 1, 1, 1)); //1
-        bestelling.addBroodje(new Broodje("Broodje 1", 1, 1, 1)); //2
-
-        bestelling.addBeleg(0, new Beleg("Beleg 1", 1, 1, 1));
-        bestelling.addBeleg(0, new Beleg("Beleg 2", 1, 1, 1));
-        bestelling.addBeleg(1, new Beleg("Beleg 1", 1, 1, 1));
-        bestelling.addBeleg(1, new Beleg("Beleg 2", 1, 1, 1));
-        bestelling.addBeleg(1, new Beleg("Beleg 2", 1, 1, 1));
-        bestelling.addBeleg(1, new Beleg("Beleg 3", 1, 1, 1));
-
-        ObservableList<Item> items = FXCollections.observableList(new ArrayList<>(bestelling.getItems().values()));
-        table.setItems(items);
+        if (controller.getBestelling() == null) {
+            table.setItems(FXCollections.observableList(new ArrayList<>()));
+            aantalBroodjes.setText("Aantal broodjes: 0");
+        } else {
+            ObservableList<Item> items = FXCollections.observableList(new ArrayList<>(controller.getBestelling().getItems().values()));
+            table.setItems(items);
+            aantalBroodjes.setText("Aantal broodjes: " + controller.getBestelling().getItems().size());
+        }
         table.refresh();
-        //-------------------
+    }
+
+    public void disableButtons(boolean disabled) {
+        addSameItem.setDisable(disabled);
+        deleteItem.setDisable(disabled);
+        cancelOrder.setDisable(disabled);
+    }
+
+    public Item getSelectedItem() {
+        return table.getSelectionModel().getSelectedItem();
+    }
+
+    public void selectLast() {
+        table.getSelectionModel().selectLast();
     }
 }

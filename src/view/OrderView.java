@@ -2,6 +2,7 @@ package view;
 
 import controller.OrderViewController;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,11 +23,18 @@ import view.panels.OrderButtonsPane;
 public class OrderView {
 	private Stage stage = new Stage();
 	private final GridPane grid = new GridPane();
-	private Button newOrderButton;
+	private Button newOrderButton, closeOrderButton, payButton, toKitchenButton;
 	private Label volgnrLabel;
 	private ChoiceBox<String> kortingChoice;
-		
+	private HBox kortingHBox;
+	private OrderButtonsPane orderButtons;
+	private OrderViewController controller;
+	private BestellingTablePane bestellingTablePane;
+
 	public OrderView(OrderViewController controller){
+		this.controller = controller;
+		controller.setView(this);
+
 		stage.setTitle("ORDER VIEW");
 		stage.initStyle(StageStyle.UTILITY);
 		stage.setX(20);
@@ -45,15 +53,18 @@ public class OrderView {
 		newOrderButton.setFont(new Font("Arial", 15));
 		newOrderHBox.getChildren().add(newOrderButton);
 
+		newOrderButton.setOnAction(event -> startNewOrder());
+
 		//Bestelling volgnr
-		volgnrLabel = new Label("Volgnr: Test");
+		volgnrLabel = new Label("Volgnr: 0");
 		volgnrLabel.setFont(new Font("Arial", 15));
 		newOrderHBox.getChildren().add(volgnrLabel);
 
 		grid.add(newOrderHBox, 0, 0, 3, 1);
 
 		//Korting choice
-		HBox kortingHBox = getHBox();
+		kortingHBox = getHBox();
+		kortingHBox.setDisable(true);
 		kortingChoice = new ChoiceBox<>(FXCollections.observableArrayList(
 				"Goedkoopste broodje gratis", "Test 1", "Test 2"));
 		kortingHBox.getChildren().add(kortingChoice);
@@ -61,17 +72,21 @@ public class OrderView {
 
 
 		//---BROODJES EN BELEG BUTTONS---
-		VBox orderButtons = new OrderButtonsPane(controller);
+		orderButtons = new OrderButtonsPane(controller);
 		grid.add(orderButtons, 0, 1, 4, 2);
 
 
 		//---BROODJES TABLE---
-		VBox bestellingTablePane = new BestellingTablePane(controller);
+		bestellingTablePane = new BestellingTablePane(controller);
 		grid.add(bestellingTablePane, 0, 3, 4, 2);
+		orderButtons.setBestellingTablePane(bestellingTablePane);
+		orderButtons.refreshButtons();
+		orderButtons.disableButtons(true);
 
 
 		//---FOOTER---
-		Button closeOrderButton = new Button("Afsluiten bestelling");
+		closeOrderButton = new Button("Afsluiten bestelling");
+		closeOrderButton.setDisable(true);
 		closeOrderButton.setCursor(Cursor.HAND);
 		grid.add(closeOrderButton, 0, 5, 1, 1);
 
@@ -82,18 +97,20 @@ public class OrderView {
 		teBetalenLabel.setFont(new Font("Arial", 15));
 		betalenHBox.getChildren().add(teBetalenLabel);
 
-		Label prijsLabel = new Label("6,55 €");
+		Label prijsLabel = new Label("-");
 		prijsLabel.setFont(new Font("Arial", 20));
 		betalenHBox.getChildren().add(prijsLabel);
 		grid.add(betalenHBox, 1, 5, 2, 1);
 
 		HBox lastHBox = new HBox(5);
 		lastHBox.setAlignment(Pos.CENTER);
-		Button payButton = new Button("Betaal");
+		payButton = new Button("Betaal");
+		payButton.setDisable(true);
 		payButton.setCursor(Cursor.HAND);
 		lastHBox.getChildren().add(payButton);
 
-		Button toKitchenButton = new Button("Naar keuken");
+		toKitchenButton = new Button("Naar keuken");
+		toKitchenButton.setDisable(true);
 		toKitchenButton.setCursor(Cursor.HAND);
 		lastHBox.getChildren().add(toKitchenButton);
 		grid.add(lastHBox, 3, 5, 1, 1);
@@ -135,5 +152,31 @@ public class OrderView {
 		grid.setPrefHeight(650);
 		grid.setPadding(new Insets(20, 20, 20, 20));
 		GridPane.setHalignment(grid, HPos.CENTER);
+	}
+
+	public void startNewOrder() {
+		//Disable start order button
+		newOrderButton.setDisable(true);
+
+		//Enable alle andere buttons
+		closeOrderButton.setDisable(false);
+		payButton.setDisable(false);
+		toKitchenButton.setDisable(false);
+		kortingHBox.setDisable(false);
+		orderButtons.refreshButtons();
+		bestellingTablePane.disableButtons(false);
+
+		//Make new object bestelling
+		controller.startNewOrder();
+
+		//Set id of the order in the label
+		int orderID = controller.getOrderID();
+		volgnrLabel.setText("Volgnr: " + orderID);
+	}
+
+	public void refreshOrder() {
+		orderButtons.refreshButtons();
+		bestellingTablePane.refreshTable();
+
 	}
 }

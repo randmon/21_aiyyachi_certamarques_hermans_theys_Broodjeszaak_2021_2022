@@ -21,6 +21,7 @@ public class SandwichOverviewPane extends GridPane{
 
 	public SandwichOverviewPane(AdminViewController controller) {
 		this.controller = controller;
+		controller.setView(this);
 		this.setPadding(new Insets(5, 5, 5, 5));
         this.setVgap(5);
         this.setHgap(5);

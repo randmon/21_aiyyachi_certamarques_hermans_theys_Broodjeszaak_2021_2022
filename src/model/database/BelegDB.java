@@ -21,5 +21,8 @@ public class BelegDB extends DB<Beleg> {
         return instance;
     }
 
-
+    @Override
+    public void setVoorraad(Beleg b, int amount) {
+        b.setVoorraad(amount);
+    }
 }

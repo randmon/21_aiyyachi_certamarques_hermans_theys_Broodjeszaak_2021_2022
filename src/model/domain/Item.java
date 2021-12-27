@@ -7,23 +7,24 @@ import java.util.List;
  * Elke item heeft een broodje en een lijst van beleg
  * */
 public class Item {
-    private final String broodje;
-    private final List<String> beleg;
+    private final Broodje broodje;
+    private final List<Beleg> beleg;
 
-    public Item(String broodje, List<String> beleg) {
+    public Item(Broodje broodje, List<Beleg> beleg) {
         this.broodje = broodje;
         this.beleg = beleg;
     }
 
-    public void addBeleg(String beleg) {
+    public void addBeleg(Beleg beleg) {
         this.beleg.add(beleg);
     }
 
-    public String getBeleg() {
-        return String.join(", ", beleg);
+    public List<Beleg> getBeleg() {
+        return beleg;
+        //return String.join(", ", beleg);
     }
 
-    public String getBroodje() {
+    public Broodje getBroodje() {
         return broodje;
     }
 }

@@ -3,16 +3,22 @@ package view.panels;
 import controller.OrderViewController;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import model.domain.Beleg;
+import model.domain.Broodje;
+import model.domain.Item;
 
 import java.util.List;
 
 public class OrderButtonsPane extends VBox {
-    private final HBox broodjesButtons = new HBox();
-    private final HBox belegButtons = new HBox();
-    private OrderViewController controller;
+    private final FlowPane broodjesButtons = new FlowPane();
+    private final FlowPane belegButtons = new FlowPane();
+    private final OrderViewController controller;
+    private BestellingTablePane bestellingTablePane;
 
     public OrderButtonsPane(OrderViewController controller) {
         super(20);
@@ -22,38 +28,68 @@ public class OrderButtonsPane extends VBox {
         getChildren().add(broodjesButtons);
         getChildren().add(belegButtons);
 
-        broodjesButtons.setSpacing(10);
-        belegButtons.setSpacing(10);
-
-        refreshButtons(broodjesButtons, belegButtons);
+        broodjesButtons.setHgap(10);
+        broodjesButtons.setVgap(4);
+        belegButtons.setHgap(10);
+        belegButtons.setVgap(4);
 
         setPadding(new Insets(5,5,5,5));
-
     }
 
-    public void refreshButtons(HBox broodjesButtons, HBox belegButtons) {
+    public void refreshButtons() {
         broodjesButtons.getChildren().clear();
         belegButtons.getChildren().clear();
 
-        List<String> broodjes = controller.getBroodjeButtons();
-        List<String> beleg = controller.getBelegButtons();
+        List<Broodje> broodjesList = controller.getBroodjes();
+        List<Beleg> belegList = controller.getBeleg();
 
-        for(String s : broodjes){
-               Button button = new Button(s);
+        for(Broodje broodje : broodjesList){
+               Button button = new Button(broodje.getNaam());
+
+               button.setOnAction(event -> {
+                   controller.addNewItem(broodje);
+                   bestellingTablePane.selectLast();
+               });
+
                button.setCursor(Cursor.HAND);
             button.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE,
                     new CornerRadii(5),
                     Insets.EMPTY)));
-               broodjesButtons.getChildren().add(button);
+            broodjesButtons.getChildren().add(button);
+            button.setDisable(broodje.getVoorraad() == 0);
         }
 
-        for(String s : beleg){
-            Button button = new Button(s);
+        for(Beleg beleg : belegList){
+            Button button = new Button(beleg.getNaam());
+
+            //Get selected item in the table
+            Item selectedItem = bestellingTablePane.getSelectedItem();
+
+            //Add to the Item object in that line the beleg that we clicked on
+            button.setOnAction(event -> controller.addBelegToItem(selectedItem, beleg));
+
             button.setCursor(Cursor.HAND);
             button.setBackground(new Background(new BackgroundFill(Color.YELLOW,
                     new CornerRadii(5),
                     Insets.EMPTY)));
             belegButtons.getChildren().add(button);
+            button.setDisable(beleg.getVoorraad() == 0);
         }
     }
+
+    public void setBestellingTablePane(BestellingTablePane bestellingTablePane) {
+        this.bestellingTablePane = bestellingTablePane;
+    }
+
+    public void disableButtons(boolean disabled) {
+        for (Node button : broodjesButtons.getChildren()) {
+            button.setDisable(disabled);
+        }
+
+        for (Node button : belegButtons.getChildren()) {
+            button.setDisable(disabled);
+        }
+    }
+
+
 }

@@ -20,4 +20,9 @@ public class BroodjesDB extends DB<Broodje> {
         if (instance == null) instance = new BroodjesDB(fileType);
         return instance;
     }
+
+    @Override
+    public void setVoorraad(Broodje b, int amount) {
+        b.setVoorraad(amount);
+    }
 }

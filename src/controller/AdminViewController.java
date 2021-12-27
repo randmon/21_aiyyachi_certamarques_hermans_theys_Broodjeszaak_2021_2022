@@ -18,6 +18,10 @@ public class AdminViewController implements Observer {
         this.model.addObserver(this);
     }
 
+    public void setView(SandwichOverviewPane view) {
+        this.view = view;
+    }
+
     public Map<String, Broodje> getBroodjes() {
         return model.getBroodjes();
     }

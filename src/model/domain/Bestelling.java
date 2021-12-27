@@ -32,13 +32,13 @@ public class Bestelling {
     public void addBroodje(Broodje broodje) {
         if (broodje.getVoorraad() < 1) throw new DomainException("Dit broodje is niet meer in voorraad!");
 
-        items.put(getNextItemID(), new Item(broodje.getNaam(), new ArrayList<>()));
+        items.put(getNextItemID(), new Item(broodje, new ArrayList<>()));
     }
 
-    public void addBeleg(int itemID, Beleg beleg) {
+    public void addBeleg(Item item, Beleg beleg) {
         if (beleg.getVoorraad() < 1) throw new DomainException("Dit beleg is niet meer in voorraad!");
 
-        items.get(itemID).addBeleg(beleg.getNaam());
+        item.addBeleg(beleg);
     }
 
     public void addSameBroodje(Broodje broodje, List<Beleg> beleg) {
@@ -48,9 +48,7 @@ public class Bestelling {
             if (b.getVoorraad() < 1) throw new DomainException("Dit beleg is niet meer in voorraad!");
         }
 
-        List<String> belegnamen = beleg.stream().map(Product::getNaam).collect(Collectors.toList());
-
-        items.put(getNextItemID(), new Item(broodje.getNaam(), belegnamen));
+        items.put(getNextItemID(), new Item(broodje, beleg));
     }
 
     public void deleteBroodje(int itemID) {

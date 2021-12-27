@@ -25,4 +25,6 @@ public abstract class DB<T> {
     public void save() {
         fileManagerStrategy.save(items);
     }
+
+    public abstract void setVoorraad(T item, int amount);
 }

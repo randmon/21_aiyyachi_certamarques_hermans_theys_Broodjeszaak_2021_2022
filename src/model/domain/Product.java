@@ -32,12 +32,12 @@ public abstract class Product {
 
     //SETTERS
 
-    public void setNaam(String naam) {
+    private void setNaam(String naam) {
         if (naam == null || naam.isEmpty()) throw new DomainException("Naam mag niet leeg zijn");
         this.naam = naam;
     }
 
-    public void setPrijs(double prijs) {
+    private void setPrijs(double prijs) {
         if (prijs < 0) throw new DomainException("Prijs mag niet negatief zijn");
         this.prijs = prijs;
     }
@@ -47,7 +47,7 @@ public abstract class Product {
         this.voorraad = voorraad;
     }
 
-    public void setBesteld(int besteld) {
+    private void setBesteld(int besteld) {
         if (besteld < 0) throw new DomainException("Aantal besteld mag niet negatief zijn");
         this.besteld = besteld;
     }

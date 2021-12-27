@@ -2,41 +2,59 @@ package controller;
 
 import model.BestelFacade;
 import model.domain.Beleg;
+import model.domain.Bestelling;
 import model.domain.Broodje;
+import model.domain.Item;
+import view.OrderView;
 
 import java.util.*;
 
 public class OrderViewController implements Observer {
     private final BestelFacade model;
+    private OrderView view;
 
     public OrderViewController(BestelFacade model) {
         this.model = model;
+        this.model.addObserver(this);
     }
 
+    public void setView(OrderView view) {
+        this.view = view;
+    }
 
     @Override
     public void update(Observable o, Object arg) {
-        //TODO
+        view.refreshOrder();
     }
 
-    public List<String> getBroodjeButtons() {
-
+    public List<Broodje> getBroodjes() {
         Map<String, Broodje> broodjeMap = model.getBroodjes();
-        List<String> broodjes = new ArrayList<>();
-        for(Map.Entry<String, Broodje> b : broodjeMap.entrySet()) {
-            if (b.getValue().getVoorraad() > 0) broodjes.add(b.getKey());
-        }
 
-        return broodjes;
+        return new ArrayList<>(broodjeMap.values());
     }
 
-    public List<String> getBelegButtons() {
+    public List<Beleg> getBeleg() {
         Map<String, Beleg> belegMap = model.getBeleg();
-        List<String> belegList = new ArrayList<>();
-        for(Map.Entry<String, Beleg> b : belegMap.entrySet()) {
-            if (b.getValue().getVoorraad() > 0) belegList.add(b.getKey());
-        }
+        return new ArrayList<>(belegMap.values());
+    }
 
-        return belegList;
+    public void startNewOrder() {
+        model.startNewOrder();
+    }
+
+    public int getOrderID() {
+        return model.getOrderID();
+    }
+
+    public void addNewItem(Broodje b) {
+        model.addNewItem(b);
+    }
+
+    public Bestelling getBestelling() {
+        return model.getBestelling();
+    }
+
+    public void addBelegToItem(Item item, Beleg beleg) {
+        model.getBestelling().addBeleg(item, beleg);
     }
 }
