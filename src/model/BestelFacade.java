@@ -2,7 +2,10 @@ package model;
 
 import model.database.BelegDB;
 import model.database.BroodjesDB;
-import model.domain.*;
+import model.domain.Beleg;
+import model.domain.Broodje;
+import model.domain.DomainException;
+import model.domain.Item;
 import model.domain.bestelling.Bestelling;
 import model.domain.bestelling.BestellingEvent;
 
@@ -60,9 +63,34 @@ public class BestelFacade extends Observable {
 
     public void addBeleg(Item item, Beleg beleg) {
         if (item == null) return;
-        item.addBeleg(beleg);
+        bestelling.addBeleg(item, beleg);
         belegDB.setVoorraad(beleg, beleg.getVoorraad()-1);
         setChanged();
         notifyObservers(BestellingEvent.ADD_BELEG);
+    }
+
+
+    public double calculatePrice() {
+        double total = 0;
+        for (Item i : bestelling.getItems()) {
+            total += i.calculatePrice();
+        }
+        return total;
+    }
+
+    public void addSameItem(Item item) {
+       bestelling.addSameBroodje(item.getBroodje(), item.getBeleg());
+       broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad()-1);
+       for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad()-1);
+
+        setChanged();
+        notifyObservers(BestellingEvent.ADD_SAME_BROODJE);
+    }
+
+    public void deleteItem(Item itemToDelete) {
+        bestelling.deleteBroodje(itemToDelete);
+
+        setChanged();
+        notifyObservers(BestellingEvent.REMOVE_BROODJE);
     }
 }

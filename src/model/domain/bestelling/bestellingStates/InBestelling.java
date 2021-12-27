@@ -1,4 +1,7 @@
-package model.domain.bestelling;
+package model.domain.bestelling.bestellingStates;
+
+import model.domain.bestelling.BestellingContext;
+import model.domain.bestelling.bestellingStates.BestellingState;
 
 public class InBestelling extends BestellingState {
     @Override

@@ -3,6 +3,7 @@ package controller;
 import model.BestelFacade;
 import model.domain.Beleg;
 import model.domain.Broodje;
+import model.domain.bestelling.BestellingEvent;
 import view.panels.SandwichOverviewPane;
 
 import java.util.Map;
@@ -34,9 +35,13 @@ public class AdminViewController implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        //Update tables in view
-        view.refreshBroodjes();
-        view.refreshBeleg();
+        BestellingEvent event = (BestellingEvent) arg;
+        if (event == null) return;
+
+        if (event.equals(BestellingEvent.SEND_TO_KITCHEN)) {
+            view.refreshBroodjes();
+            view.refreshBeleg();
+        }
     }
 
     public void saveVoorraad() {

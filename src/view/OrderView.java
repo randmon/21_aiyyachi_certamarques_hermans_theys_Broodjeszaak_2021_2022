@@ -2,7 +2,6 @@ package view;
 
 import controller.OrderViewController;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,7 +23,7 @@ public class OrderView {
 	private Stage stage = new Stage();
 	private final GridPane grid = new GridPane();
 	private Button newOrderButton, closeOrderButton, payButton, toKitchenButton;
-	private Label volgnrLabel;
+	private Label volgnrLabel, prijsLabel;
 	private ChoiceBox<String> kortingChoice;
 	private HBox kortingHBox;
 	private OrderButtonsPane orderButtons;
@@ -66,7 +65,7 @@ public class OrderView {
 		kortingHBox = getHBox();
 		kortingHBox.setDisable(true);
 		kortingChoice = new ChoiceBox<>(FXCollections.observableArrayList(
-				"Goedkoopste broodje gratis", "Test 1", "Test 2"));
+				"Geen korting", "10% korting op ganse bestelling", "Goedkoopste broodje met beleg gratis"));
 		kortingHBox.getChildren().add(kortingChoice);
 		grid.add(kortingHBox, 3,0,1,1);
 
@@ -89,6 +88,7 @@ public class OrderView {
 		closeOrderButton.setDisable(true);
 		closeOrderButton.setCursor(Cursor.HAND);
 		grid.add(closeOrderButton, 0, 5, 1, 1);
+		closeOrderButton.setOnAction(event -> closeOrder());
 
 		HBox betalenHBox = new HBox(5);
 		betalenHBox.setAlignment(Pos.CENTER);
@@ -97,7 +97,7 @@ public class OrderView {
 		teBetalenLabel.setFont(new Font("Arial", 15));
 		betalenHBox.getChildren().add(teBetalenLabel);
 
-		Label prijsLabel = new Label("-");
+		prijsLabel = new Label("-");
 		prijsLabel.setFont(new Font("Arial", 20));
 		betalenHBox.getChildren().add(prijsLabel);
 		grid.add(betalenHBox, 1, 5, 2, 1);
@@ -158,10 +158,8 @@ public class OrderView {
 		//Disable start order button
 		newOrderButton.setDisable(true);
 
-		//Enable alle andere buttons
+		//Enable other buttons
 		closeOrderButton.setDisable(false);
-		payButton.setDisable(false);
-		toKitchenButton.setDisable(false);
 		kortingHBox.setDisable(false);
 		orderButtons.refreshButtons();
 		bestellingTablePane.disableButtons(false);
@@ -177,5 +175,22 @@ public class OrderView {
 	public void refreshOrder() {
 		orderButtons.refreshButtons();
 		bestellingTablePane.refreshTable();
+	}
+
+	public void closeOrder() {
+		//Calculate price and set label
+		double price = controller.calculatePrice();
+		prijsLabel.setText("€ " + Math.round(price * 100.0) / 100.0);
+
+		//Enable pay button
+		payButton.setDisable(false);
+
+		//Disable other buttons
+		closeOrderButton.setDisable(true);
+		kortingHBox.setDisable(true);
+		orderButtons.disableButtons(true);
+		bestellingTablePane.disableButtons(true);
+		bestellingTablePane.getCancelOrderButton().setDisable(false);
+
 	}
 }

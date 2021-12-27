@@ -8,6 +8,7 @@ import model.domain.bestelling.Bestelling;
 import model.domain.bestelling.BestellingEvent;
 import view.OrderView;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class OrderViewController implements Observer {
@@ -27,7 +28,14 @@ public class OrderViewController implements Observer {
     public void update(Observable o, Object arg) {
         BestellingEvent event = (BestellingEvent) arg;
         if (event == null) return;
-        if (event.equals(BestellingEvent.ADD_BROODJE) || event.equals(BestellingEvent.ADD_BELEG)) {
+        List<BestellingEvent> list = Arrays.asList(
+                BestellingEvent.ADD_BROODJE,
+                BestellingEvent.ADD_BELEG,
+                BestellingEvent.ADD_SAME_BROODJE,
+                BestellingEvent.REMOVE_BROODJE
+        );
+
+        if (list.contains(event)) {
             view.refreshOrder();
         }
     }
@@ -61,5 +69,17 @@ public class OrderViewController implements Observer {
 
     public void addBelegToItem(Item item, Beleg beleg) {
         model.addBeleg(item, beleg);
+    }
+
+    public double calculatePrice() {
+        return model.calculatePrice();
+    }
+
+    public void addSameItem(Item selectedItem) {
+        model.addSameItem(selectedItem);
+    }
+
+    public void deleteItem(Item itemToDelete) {
+        model.deleteItem(itemToDelete);
     }
 }

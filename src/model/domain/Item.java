@@ -28,5 +28,12 @@ public class Item {
         return broodje;
     }
 
+    public double calculatePrice() {
+        double total = broodje.getPrijs();
 
+        for (Beleg b : beleg) {
+            total += b.getPrijs();
+        }
+        return total;
+    }
 }
