@@ -6,6 +6,7 @@ import model.domain.*;
 import model.domain.bestelling.Bestelling;
 import model.domain.bestelling.BestellingEvent;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
@@ -64,5 +65,20 @@ public class BestelFacade extends Observable {
         belegDB.setVoorraad(beleg, beleg.getVoorraad()-1);
         setChanged();
         notifyObservers(BestellingEvent.ADD_BELEG);
+    }
+
+
+    public double calculatePrice() {
+        double total = 0;
+        for (Item i : bestelling.getItems().values()) {
+            total += i.calculatePrice();
+        }
+        return total;
+    }
+
+    public void addSameItem(Item item) {
+       bestelling.addSameBroodje(item.getBroodje(), item.getBeleg());
+       broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad()-1);
+       for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad()-1);
     }
 }

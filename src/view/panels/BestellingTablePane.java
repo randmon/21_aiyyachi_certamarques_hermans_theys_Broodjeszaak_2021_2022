@@ -6,20 +6,19 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import model.domain.Beleg;
 import model.domain.Broodje;
+import model.domain.DomainException;
 import model.domain.Item;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class BestellingTablePane extends VBox {
     private final OrderViewController controller;
@@ -61,6 +60,7 @@ public class BestellingTablePane extends VBox {
         addSameItem = new Button("Voeg zelfde broodje toe");
         addSameItem.setCursor(Cursor.HAND);
         topVBox.getChildren().add(addSameItem);
+        addSameItem.setOnAction(event -> addSameItem());
 
         deleteItem = new Button("Verwijder broodje");
         deleteItem.setCursor(Cursor.HAND);
@@ -110,4 +110,22 @@ public class BestellingTablePane extends VBox {
     public void selectLast() {
         table.getSelectionModel().selectLast();
     }
+
+    private void addSameItem() {
+        Item itemToDuplicate = getSelectedItem();
+        try {
+            controller.addSameItem(itemToDuplicate);
+
+        } catch (DomainException e ) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(e.getMessage());
+            alert.setTitle("Error Message");
+            alert.showAndWait();
+        }
+
+        //Refresh table with broodje
+        refreshTable();
+        selectLast();
+    }
+
 }

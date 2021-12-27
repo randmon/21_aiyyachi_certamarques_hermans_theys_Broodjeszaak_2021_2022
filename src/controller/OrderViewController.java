@@ -62,4 +62,12 @@ public class OrderViewController implements Observer {
     public void addBelegToItem(Item item, Beleg beleg) {
         model.addBeleg(item, beleg);
     }
+
+    public double calculatePrice() {
+        return model.calculatePrice();
+    }
+
+    public void addSameItem(Item selectedItem) {
+        model.addSameItem(selectedItem);
+    }
 }
