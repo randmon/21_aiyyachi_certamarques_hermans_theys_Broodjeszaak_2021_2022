@@ -106,4 +106,40 @@ public class Bestelling {
     public void finishOrder() {
         context.getState().afwerken(context);
     }
+
+    public List<String> getItemsForKitchen() {
+        List<String> result = new ArrayList<>();
+
+        List<String> allItems = new ArrayList<>();
+
+
+        for (Item i : items) {
+            //vb: "Wit: "
+            String item = i.getBroodje().getNaam() + ": ";
+            HashMap<String, Integer> beleg = new HashMap<>();
+            for (Beleg b : i.getBeleg()) {
+                beleg.put(b.getNaam(), beleg.getOrDefault(b.getNaam(), 0) + 1);
+            }
+            List<String> belegStrings = new ArrayList<>();
+            for (Map.Entry<String, Integer> entry : beleg.entrySet()) {
+                belegStrings.add(entry.getValue() + " x " + entry.getKey());
+            }
+            item += String.join(",", belegStrings);
+            allItems.add(item);
+        }
+
+        HashMap<String, Integer> items = new HashMap<>();
+
+        for (String s : allItems) {
+            items.put(s, items.getOrDefault(s, 0) + 1);
+        }
+
+        for (Map.Entry<String, Integer> entry : items.entrySet()) {
+            result.add(entry.getValue() + " x " + entry.getKey());
+        }
+
+        System.out.println(result);
+
+        return result;
+    }
 }

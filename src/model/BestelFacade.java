@@ -8,17 +8,17 @@ import model.domain.DomainException;
 import model.domain.Item;
 import model.domain.bestelling.Bestelling;
 import model.domain.bestelling.BestellingEvent;
+import model.domain.korting.Korting;
+import model.domain.korting.KortingEnum;
+import model.domain.korting.KortingFactory;
 
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Observable;
+import java.util.*;
 
 public class BestelFacade extends Observable {
     private BroodjesDB broodjesDB;
     private BelegDB belegDB;
-    private Bestelling bestelling;
-    private LinkedHashSet<Bestelling> queue = new LinkedHashSet<>();
+    private Bestelling bestelling, inKitchen;
+    private Deque<Bestelling> queue = new LinkedList<>();
     private int nextOrderID;
 
     public BestelFacade(String fileType) {
@@ -69,10 +69,6 @@ public class BestelFacade extends Observable {
     }
 
 
-    public double calculatePrice() {
-        return bestelling.getPrice();
-    }
-
     public void addSameItem(Item item) {
         if (item == null) {
             throw new DomainException("Item mag niet leeg zijn");
@@ -117,9 +113,10 @@ public class BestelFacade extends Observable {
         notifyObservers(BestellingEvent.CANCEL_ORDER);
     }
 
-    public double closeOrder() {
+    public double closeOrder(String korting) {
+        Korting k = KortingFactory.getKorting(korting);
         bestelling.closeOrder();
-        return bestelling.getPrice();
+        return k.berekenKorting(bestelling);
     }
 
     public void pay() {
@@ -127,11 +124,43 @@ public class BestelFacade extends Observable {
     }
 
     public void toKitchen() {
+        bestelling.sendToKitchen();
+
+        //Change aantal besteld
+        for (Item item : bestelling.getItems()) {
+            item.getBroodje().setBesteld(item.getBroodje().getBesteld() + 1);
+            for (Beleg b : item.getBeleg()) b.setBesteld(b.getBesteld() + 1);
+        }
+
         queue.add(bestelling);
         bestelling = new Bestelling(nextOrderID);
         nextOrderID++;
 
         setChanged();
         notifyObservers(BestellingEvent.SEND_TO_KITCHEN);
+    }
+
+    public int getInWachtrij() {
+        return queue.size();
+    }
+
+    public List<String> getKortingLijst() {
+        List<String> kortingLijst = new ArrayList<>();
+        for (KortingEnum e : KortingEnum.values()) kortingLijst.add(e.getText());
+        return kortingLijst;
+    }
+
+    public Bestelling getNextInRij() {
+        try {
+            inKitchen = queue.removeFirst();
+            inKitchen.startBereiding();
+            return inKitchen;
+        } catch (NoSuchElementException e) {
+            throw new DomainException("Er zijn geen bestellingen in de wachtrij");
+        }
+    }
+
+    public List<String> getItemsForKitchen() {
+        return inKitchen.getItemsForKitchen();
     }
 }

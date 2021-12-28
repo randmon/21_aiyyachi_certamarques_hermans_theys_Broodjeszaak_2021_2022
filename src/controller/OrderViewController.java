@@ -84,8 +84,8 @@ public class OrderViewController implements Observer {
         model.cancelOrder();
     }
 
-    public double closeOrder() {
-        return model.closeOrder();
+    public double closeOrder(String korting) {
+        return model.closeOrder(korting);
     }
 
     public void pay() {
@@ -94,5 +94,9 @@ public class OrderViewController implements Observer {
 
     public void toKitchen() {
         model.toKitchen();
+    }
+
+    public List<String> getKortingLijst() {
+        return model.getKortingLijst();
     }
 }

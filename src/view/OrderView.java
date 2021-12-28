@@ -1,7 +1,6 @@
 package view;
 
 import controller.OrderViewController;
-import javafx.collections.FXCollections;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,7 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -27,8 +26,7 @@ public class OrderView {
 	private final GridPane grid = new GridPane();
 	private Button newOrderButton, closeOrderButton, payButton, toKitchenButton;
 	private Label volgnrLabel, prijsLabel;
-	private ChoiceBox<String> kortingChoice;
-	private HBox kortingHBox;
+	private ComboBox<String> kortingChoice;
 	private OrderButtonsPane orderButtons;
 	private BestellingTablePane bestellingTablePane;
 
@@ -64,10 +62,11 @@ public class OrderView {
 		grid.add(newOrderHBox, 0, 0, 3, 1);
 
 		//Korting choice
-		kortingHBox = getHBox();
-		kortingHBox.setDisable(true);
-		kortingChoice = new ChoiceBox<>(FXCollections.observableArrayList(
-				"Geen korting", "10% korting op ganse bestelling", "Goedkoopste broodje met beleg gratis"));
+		HBox kortingHBox = getHBox();
+		kortingChoice = new ComboBox<>();
+		kortingChoice.getItems().addAll(controller.getKortingLijst());
+		kortingChoice.getSelectionModel().selectFirst();
+		kortingChoice.setDisable(true);
 		kortingHBox.getChildren().add(kortingChoice);
 		grid.add(kortingHBox, 3,0,1,1);
 
@@ -106,6 +105,7 @@ public class OrderView {
 		grid.add(betalenHBox, 1, 5, 2, 1);
 
 		HBox lastHBox = new HBox(5);
+		lastHBox.setAlignment(Pos.CENTER);
 		lastHBox.setAlignment(Pos.CENTER);
 		payButton = new Button("Betaal");
 		payButton.setDisable(true);
@@ -183,7 +183,8 @@ public class OrderView {
 
 		//Enable other buttons
 		closeOrderButton.setDisable(false);
-		kortingHBox.setDisable(false);
+		kortingChoice.setDisable(false);
+		kortingChoice.getSelectionModel().selectFirst();
 		orderButtons.refreshButtons();
 		bestellingTablePane.disableButtons(false);
 
@@ -203,19 +204,19 @@ public class OrderView {
 	public void closeOrder() {
 		//Calculate price and set label
 		try {
-			double price = controller.closeOrder();
+			String korting = kortingChoice.getSelectionModel().getSelectedItem();
+
+			double price = controller.closeOrder(korting);
 			double priceCalculated = Math.round(price * 100.0) / 100.0;
 
-			// TODO Korting - Omar
-
-			prijsLabel.setText("€ " + priceCalculated);
+			prijsLabel.setText("€ " +  priceCalculated);
 
 			//Enable pay button
 			payButton.setDisable(false);
 
 			//Disable other buttons
 			closeOrderButton.setDisable(true);
-			kortingHBox.setDisable(true);
+			kortingChoice.setDisable(true);
 			orderButtons.disableButtons(true);
 			bestellingTablePane.disableButtons(true);
 			bestellingTablePane.getCancelOrderButton().setDisable(false);
@@ -231,7 +232,7 @@ public class OrderView {
 			newOrderButton.setDisable(false);
 			closeOrderButton.setDisable(true);
 			payButton.setDisable(true);
-			kortingHBox.setDisable(true);
+			kortingChoice.setDisable(true);
 			bestellingTablePane.disableButtons(true);
 			orderButtons.disableButtons(true);
 		} catch (DomainException e) {

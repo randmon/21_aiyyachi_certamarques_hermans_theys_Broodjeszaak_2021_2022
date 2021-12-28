@@ -5,7 +5,9 @@ import model.domain.Beleg;
 import model.domain.Broodje;
 
 import model.domain.bestelling.BestellingEvent;
+import view.AdminView;
 import view.panels.SandwichOverviewPane;
+import view.panels.StatisticsPane;
 
 import java.util.Map;
 import java.util.Observable;
@@ -13,14 +15,14 @@ import java.util.Observer;
 
 public class AdminViewController implements Observer {
     private final BestelFacade model;
-    private SandwichOverviewPane view;
+    private AdminView view;
 
     public AdminViewController(BestelFacade model) {
         this.model = model;
         this.model.addObserver(this);
     }
 
-    public void setView(SandwichOverviewPane view) {
+    public void setView(AdminView view) {
         this.view = view;
     }
 
@@ -40,8 +42,7 @@ public class AdminViewController implements Observer {
         if (event == null) return;
 
         if (event.equals(BestellingEvent.SEND_TO_KITCHEN)) {
-            view.refreshBroodjes();
-            view.refreshBeleg();
+            view.refresh();
         }
     }
 

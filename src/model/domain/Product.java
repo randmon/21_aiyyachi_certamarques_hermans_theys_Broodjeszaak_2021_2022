@@ -47,7 +47,7 @@ public abstract class Product {
         this.voorraad = voorraad;
     }
 
-    private void setBesteld(int besteld) {
+    public void setBesteld(int besteld) {
         if (besteld < 0) throw new DomainException("Aantal besteld mag niet negatief zijn");
         this.besteld = besteld;
     }
