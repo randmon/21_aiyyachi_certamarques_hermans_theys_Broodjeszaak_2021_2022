@@ -37,16 +37,6 @@ public class StatisticsPane extends GridPane {
         CategoryAxis belegYAxis = new CategoryAxis();
         belegChart = new BarChart<>(belegXAxis, belegYAxis);
         belegChart.setTitle("Omzetstatistiek beleg (in aantal porties)");
-
-        XYChart.Series<Number, String> belegData = new XYChart.Series<>();
-        belegData.getData().add(new XYChart.Data<>(22, "beleg1"));
-        belegData.getData().add(new XYChart.Data<>(15, "beleg2"));
-        belegData.getData().add(new XYChart.Data<>(13, "beleg3"));
-        belegData.getData().add(new XYChart.Data<>(20, "beleg4"));
-        belegData.getData().add(new XYChart.Data<>(5, "beleg5"));
-        belegData.getData().add(new XYChart.Data<>(10, "beleg6"));
-        belegData.getData().add(new XYChart.Data<>(16, "beleg7"));
-        belegChart.getData().add(belegData);
         belegChart.setLegendVisible(false);
 
         this.add(belegChart, 1, 0, 1, 1);
