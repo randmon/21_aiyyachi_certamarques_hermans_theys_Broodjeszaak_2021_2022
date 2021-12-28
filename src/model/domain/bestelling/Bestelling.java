@@ -103,7 +103,7 @@ public class Bestelling {
         context.getState().startBereiding(context);
     }
 
-    public void finishOrder() {
+    public void afwerken() {
         context.getState().afwerken(context);
     }
 

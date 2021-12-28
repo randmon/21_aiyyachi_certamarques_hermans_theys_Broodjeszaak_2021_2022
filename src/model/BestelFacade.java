@@ -2,7 +2,6 @@ package model;
 
 import model.database.BelegDB;
 import model.database.BroodjesDB;
-import model.database.filemanager.FileManagerStrategy;
 import model.database.filemanager.FileManagerStrategyEnum;
 import model.domain.Beleg;
 import model.domain.Broodje;
@@ -17,7 +16,6 @@ import model.domain.korting.KortingFactory;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.*;
 
 public class BestelFacade extends Observable {
@@ -161,6 +159,9 @@ public class BestelFacade extends Observable {
         try {
             inKitchen = queue.removeFirst();
             inKitchen.startBereiding();
+
+            setChanged();
+            notifyObservers(BestellingEvent.IN_BEREIDING);
             return inKitchen;
         } catch (NoSuchElementException e) {
             throw new DomainException("Er zijn geen bestellingen in de wachtrij");
@@ -170,6 +171,15 @@ public class BestelFacade extends Observable {
     public List<String> getItemsForKitchen() {
         return inKitchen.getItemsForKitchen();
     }
+
+    public void afwerken() {
+        inKitchen.afwerken();
+        setChanged();
+        notifyObservers(BestellingEvent.AFGEWERKT);
+    }
+
+
+    //----PROPERTIES----
 
     public List<String> getFileStrategies() {
         List<String> fileStrategyList = new ArrayList<>();

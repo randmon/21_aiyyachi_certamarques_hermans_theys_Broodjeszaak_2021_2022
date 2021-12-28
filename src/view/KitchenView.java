@@ -49,7 +49,6 @@ public class KitchenView {
 		queuePane.setAlignment(Pos.CENTER);
 		main.setTop(queuePane);
 		wachtrijLabel = new Label("In wachtrij: -");
-		refreshWachtrij();
 		queuePane.getChildren().add(wachtrijLabel);
 		nextOrderButton = new Button("Volgende bestelling");
 		nextOrderButton.setOnAction(event -> showBestelling());
@@ -86,7 +85,23 @@ public class KitchenView {
 		afwerkenButton.setCursor(Cursor.HAND);
 		afwerkenButton.setFont(new Font("Arial", 15));
 		afwerkenButton.setDisable(true);
+		afwerkenButton.setOnAction(event -> {
+			try {
+				//hide bestellingpane
+				bestellingPane.setVisible(false);
+
+				//enable nextbutton and disable afwerkenbutton
+				afwerkenButton.setDisable(true);
+
+				controller.afwerken();
+
+			} catch (DomainException e) {
+				showAlert(e.getMessage());
+			}
+		});
 		main.setBottom(afwerkenHBox);
+
+		refreshWachtrij();
 
 		stage.setScene(scene);
 		stage.sizeToScene();
@@ -122,6 +137,12 @@ public class KitchenView {
 	public void refreshWachtrij() {
 		int inWachtrij = controller.getInWachtrij();
 		wachtrijLabel.setText("In wachtrij: " + inWachtrij);
+		if (inWachtrij == 0) {
+			//Disable button
+			nextOrderButton.setDisable(true);
+		} else if (!bestellingPane.visibleProperty().getValue()) {
+			nextOrderButton.setDisable(false);
+		}
 	}
 
 	private void showAlert(String s) {

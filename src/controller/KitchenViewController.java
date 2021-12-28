@@ -26,7 +26,9 @@ public class KitchenViewController implements Observer {
     public void update(Observable o, Object arg) {
         BestellingEvent event = (BestellingEvent) arg;
         if (event == null) return;
-        if (event.equals(BestellingEvent.SEND_TO_KITCHEN)) {
+        if (event.equals(BestellingEvent.SEND_TO_KITCHEN) ||
+                event.equals(BestellingEvent.IN_BEREIDING) ||
+                event.equals(BestellingEvent.AFGEWERKT)) {
             view.refreshWachtrij();
         }
     }
@@ -41,5 +43,9 @@ public class KitchenViewController implements Observer {
 
     public List<String> getItemsForKitchen() {
         return model.getItemsForKitchen();
+    }
+
+    public void afwerken() {
+        model.afwerken();
     }
 }
