@@ -41,8 +41,7 @@ public class BestelFacade extends Observable {
     }
 
     public void startNewOrder() {
-        bestelling = new Bestelling(nextOrderID);
-        nextOrderID ++;
+        bestelling.getContext().setState(new InBestelling());
     }
 
     public int getOrderID() {
@@ -52,7 +51,7 @@ public class BestelFacade extends Observable {
     public void addNewItem(Broodje b) {
         try {
             bestelling.addBroodje(b);
-            broodjesDB.setVoorraad(b, b.getVoorraad()-1);
+            broodjesDB.setVoorraad(b, b.getVoorraad() - 1);
             setChanged();
             notifyObservers(BestellingEvent.ADD_BROODJE);
         } catch (DomainException d) {
@@ -67,7 +66,7 @@ public class BestelFacade extends Observable {
     public void addBeleg(Item item, Beleg beleg) {
         if (item == null) return;
         bestelling.addBeleg(item, beleg);
-        belegDB.setVoorraad(beleg, beleg.getVoorraad()-1);
+        belegDB.setVoorraad(beleg, beleg.getVoorraad() - 1);
         setChanged();
         notifyObservers(BestellingEvent.ADD_BELEG);
     }
@@ -100,8 +99,8 @@ public class BestelFacade extends Observable {
             return;
         }
         bestelling.deleteBroodje(item);
-        broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad()+1);
-        for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad()+1);
+        broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad() + 1);
+        for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad() + 1);
         setChanged();
         notifyObservers(BestellingEvent.REMOVE_BROODJE);
     }
