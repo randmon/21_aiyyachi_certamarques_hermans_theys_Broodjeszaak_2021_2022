@@ -114,7 +114,6 @@ public class Bestelling {
 
 
         for (Item i : items) {
-            //vb: "Wit: "
             String item = i.getBroodje().getNaam() + ": ";
             HashMap<String, Integer> beleg = new HashMap<>();
             for (Beleg b : i.getBeleg()) {
@@ -137,8 +136,6 @@ public class Bestelling {
         for (Map.Entry<String, Integer> entry : items.entrySet()) {
             result.add(entry.getValue() + " x " + entry.getKey());
         }
-
-        System.out.println(result);
 
         return result;
     }

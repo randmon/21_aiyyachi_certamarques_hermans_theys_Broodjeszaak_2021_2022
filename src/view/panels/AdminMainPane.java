@@ -19,7 +19,7 @@ public class AdminMainPane extends BorderPane {
         Tab statistiekTab = new Tab("Statistieken", statisticsPane);
 
         settingsPane = new SettingsPane(controller);
-        Tab instellingTab = new Tab("Instellingen");
+        Tab instellingTab = new Tab("Instellingen", settingsPane);
 
         tabPane.getTabs().add(broodjesTab);
         tabPane.getTabs().add(statistiekTab);

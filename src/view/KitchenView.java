@@ -62,7 +62,7 @@ public class KitchenView {
 		//VOLGNR
 		HBox volgnrHBox = new HBox();
 		volgnrHBox.setAlignment(Pos.CENTER);
-		volgnrLabel = new Label("\nVolgnummer bestelling: - - Aantal broodjes: -\n");
+		volgnrLabel = new Label();
 		bestellingPane.getChildren().add(volgnrHBox);
 		volgnrHBox.getChildren().add(volgnrLabel);
 

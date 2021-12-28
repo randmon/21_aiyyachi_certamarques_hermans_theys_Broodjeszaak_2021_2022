@@ -2,6 +2,8 @@ package model;
 
 import model.database.BelegDB;
 import model.database.BroodjesDB;
+import model.database.filemanager.FileManagerStrategy;
+import model.database.filemanager.FileManagerStrategyEnum;
 import model.domain.Beleg;
 import model.domain.Broodje;
 import model.domain.DomainException;
@@ -12,6 +14,9 @@ import model.domain.korting.Korting;
 import model.domain.korting.KortingEnum;
 import model.domain.korting.KortingFactory;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class BestelFacade extends Observable {
@@ -162,5 +167,25 @@ public class BestelFacade extends Observable {
 
     public List<String> getItemsForKitchen() {
         return inKitchen.getItemsForKitchen();
+    }
+
+    public List<String> getFileStrategies() {
+        List<String> fileStrategyList = new ArrayList<>();
+        for (FileManagerStrategyEnum e : FileManagerStrategyEnum.values()) fileStrategyList.add(e.getFileType());
+        return fileStrategyList;
+    }
+
+    public String getProperty(String property) {
+        try {
+            FileReader fileReader = new FileReader("src/bestanden/settings.properties");
+            Properties properties = new Properties();
+            properties.load(fileReader);
+            return properties.getProperty(property);
+        } catch (IOException e) {
+            throw new DomainException("Error reading file");
+        }
+    }
+
+    public void setSaveStrategy(FileManagerStrategy fileManagerStrategy) {
     }
 }
