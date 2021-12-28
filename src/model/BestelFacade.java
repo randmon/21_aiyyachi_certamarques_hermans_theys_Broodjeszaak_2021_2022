@@ -10,6 +10,7 @@ import model.domain.bestelling.Bestelling;
 import model.domain.bestelling.BestellingEvent;
 
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Observable;
 
@@ -17,6 +18,7 @@ public class BestelFacade extends Observable {
     private BroodjesDB broodjesDB;
     private BelegDB belegDB;
     private Bestelling bestelling;
+    private LinkedHashSet<Bestelling> queue = new LinkedHashSet<>();
     private int nextOrderID;
 
     public BestelFacade(String fileType) {
@@ -95,6 +97,8 @@ public class BestelFacade extends Observable {
     }
 
     public void cancelOrder() {
+        bestelling.cancelOrder();
+
         //Put voorraad back
         Iterator<Item> i = bestelling.getItems().iterator();
 
@@ -116,5 +120,18 @@ public class BestelFacade extends Observable {
     public double closeOrder() {
         bestelling.closeOrder();
         return bestelling.getPrice();
+    }
+
+    public void pay() {
+        bestelling.pay();
+    }
+
+    public void toKitchen() {
+        queue.add(bestelling);
+        bestelling = new Bestelling(nextOrderID);
+        nextOrderID++;
+
+        setChanged();
+        notifyObservers(BestellingEvent.SEND_TO_KITCHEN);
     }
 }

@@ -110,11 +110,31 @@ public class OrderView {
 		payButton = new Button("Betaal");
 		payButton.setDisable(true);
 		payButton.setCursor(Cursor.HAND);
+		payButton.setOnAction(event -> {
+			try {
+				controller.pay();
+				payButton.setDisable(true);
+				bestellingTablePane.disableButtons(true);
+				toKitchenButton.setDisable(false);
+			} catch (DomainException e) {
+				showAlert(e.getMessage());
+			}
+		});
 		lastHBox.getChildren().add(payButton);
 
 		toKitchenButton = new Button("Naar keuken");
 		toKitchenButton.setDisable(true);
 		toKitchenButton.setCursor(Cursor.HAND);
+		toKitchenButton.setOnAction(event -> {
+			try {
+				controller.toKitchen();
+				toKitchenButton.setDisable(true);
+				orderButtons.disableButtons(true);
+				newOrderButton.setDisable(false);
+			} catch (DomainException e) {
+				showAlert(e.getMessage());
+			}
+		});
 		lastHBox.getChildren().add(toKitchenButton);
 		grid.add(lastHBox, 3, 5, 1, 1);
 
@@ -184,35 +204,45 @@ public class OrderView {
 		//Calculate price and set label
 		try {
 			double price = controller.closeOrder();
+			double priceCalculated = Math.round(price * 100.0) / 100.0;
 
-		prijsLabel.setText("€ " + Math.round(price * 100.0) / 100.0);
+			// TODO Korting - Omar
 
-		//Enable pay button
-		payButton.setDisable(false);
+			prijsLabel.setText("€ " + priceCalculated);
 
-		//Disable other buttons
-		closeOrderButton.setDisable(true);
-		kortingHBox.setDisable(true);
-		orderButtons.disableButtons(true);
-		bestellingTablePane.disableButtons(true);
-		bestellingTablePane.getCancelOrderButton().setDisable(false);
+			//Enable pay button
+			payButton.setDisable(false);
+
+			//Disable other buttons
+			closeOrderButton.setDisable(true);
+			kortingHBox.setDisable(true);
+			orderButtons.disableButtons(true);
+			bestellingTablePane.disableButtons(true);
+			bestellingTablePane.getCancelOrderButton().setDisable(false);
 		} catch (DomainException e) {
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setHeaderText(e.getMessage());
-			alert.setTitle("Error!");
-			alert.showAndWait();
+			showAlert(e.getMessage());
 		}
 	}
 
 	public void cancelOrder() {
-		controller.cancelOrder();
+		try {
+			controller.cancelOrder();
 
-		newOrderButton.setDisable(false);
-		closeOrderButton.setDisable(true);
-		kortingHBox.setDisable(true);
-		bestellingTablePane.disableButtons(true);
-		orderButtons.disableButtons(true);
+			newOrderButton.setDisable(false);
+			closeOrderButton.setDisable(true);
+			payButton.setDisable(true);
+			kortingHBox.setDisable(true);
+			bestellingTablePane.disableButtons(true);
+			orderButtons.disableButtons(true);
+		} catch (DomainException e) {
+			showAlert(e.getMessage());
+		}
 	}
 
-	
+	private void showAlert(String s) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setHeaderText(s);
+		alert.setTitle("Error!");
+		alert.showAndWait();
+	}
 }

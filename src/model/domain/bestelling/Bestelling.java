@@ -91,7 +91,7 @@ public class Bestelling {
         context.getState().annuleren(context);
     }
 
-    public void payOrder() {
+    public void pay() {
         context.getState().betaal(context);
     }
 

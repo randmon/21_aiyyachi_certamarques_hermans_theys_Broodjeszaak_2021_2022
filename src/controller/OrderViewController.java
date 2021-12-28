@@ -32,7 +32,8 @@ public class OrderViewController implements Observer {
                 BestellingEvent.ADD_BELEG,
                 BestellingEvent.ADD_SAME_BROODJE,
                 BestellingEvent.REMOVE_BROODJE,
-                BestellingEvent.CANCEL_ORDER
+                BestellingEvent.CANCEL_ORDER,
+                BestellingEvent.SEND_TO_KITCHEN
         );
 
         if (list.contains(event)) {
@@ -85,5 +86,13 @@ public class OrderViewController implements Observer {
 
     public double closeOrder() {
         return model.closeOrder();
+    }
+
+    public void pay() {
+        model.pay();
+    }
+
+    public void toKitchen() {
+        model.toKitchen();
     }
 }
