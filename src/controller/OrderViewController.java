@@ -32,7 +32,8 @@ public class OrderViewController implements Observer {
                 BestellingEvent.ADD_BROODJE,
                 BestellingEvent.ADD_BELEG,
                 BestellingEvent.ADD_SAME_BROODJE,
-                BestellingEvent.REMOVE_BROODJE
+                BestellingEvent.REMOVE_BROODJE,
+                BestellingEvent.CANCEL_ORDER
         );
 
         if (list.contains(event)) {
@@ -81,5 +82,9 @@ public class OrderViewController implements Observer {
 
     public void deleteItem(Item itemToDelete) {
         model.deleteItem(itemToDelete);
+    }
+
+    public void cancelOrder() {
+        model.cancelOrder();
     }
 }

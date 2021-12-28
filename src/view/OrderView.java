@@ -81,6 +81,7 @@ public class OrderView {
 		orderButtons.setBestellingTablePane(bestellingTablePane);
 		orderButtons.refreshButtons();
 		orderButtons.disableButtons(true);
+		bestellingTablePane.getCancelOrderButton().setOnAction(event -> cancelOrder());
 
 
 		//---FOOTER---
@@ -164,7 +165,7 @@ public class OrderView {
 		orderButtons.refreshButtons();
 		bestellingTablePane.disableButtons(false);
 
-		//Make new object bestelling
+		//Change bestelling state
 		controller.startNewOrder();
 
 		//Set id of the order in the label
@@ -191,6 +192,17 @@ public class OrderView {
 		orderButtons.disableButtons(true);
 		bestellingTablePane.disableButtons(true);
 		bestellingTablePane.getCancelOrderButton().setDisable(false);
-
 	}
+
+	public void cancelOrder() {
+		controller.cancelOrder();
+
+		newOrderButton.setDisable(false);
+		closeOrderButton.setDisable(true);
+		kortingHBox.setDisable(true);
+		bestellingTablePane.disableButtons(true);
+		orderButtons.disableButtons(true);
+	}
+
+	
 }

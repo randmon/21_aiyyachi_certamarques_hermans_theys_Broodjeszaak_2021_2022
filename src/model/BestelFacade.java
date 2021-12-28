@@ -8,7 +8,9 @@ import model.domain.DomainException;
 import model.domain.Item;
 import model.domain.bestelling.Bestelling;
 import model.domain.bestelling.BestellingEvent;
+import model.domain.bestelling.bestellingStates.InBestelling;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
 
@@ -21,7 +23,8 @@ public class BestelFacade extends Observable {
     public BestelFacade(String fileType) {
         broodjesDB = BroodjesDB.getInstance(fileType);
         belegDB = BelegDB.getInstance(fileType);
-        nextOrderID = 1;
+        bestelling = new Bestelling(1);
+        nextOrderID = 2;
     }
 
     public Map<String, Broodje> getBroodjes() {
@@ -79,19 +82,46 @@ public class BestelFacade extends Observable {
     }
 
     public void addSameItem(Item item) {
-       bestelling.addSameBroodje(item.getBroodje(), item.getBeleg());
-       broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad()-1);
-       for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad()-1);
+        if (item == null) {
+            //TODO show error
+            return;
+        }
+        bestelling.addSameBroodje(item.getBroodje(), item.getBeleg());
+        broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad() - 1);
+        for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad() - 1);
 
         setChanged();
         notifyObservers(BestellingEvent.ADD_SAME_BROODJE);
     }
 
     public void deleteItem(Item item) {
+        if (item == null) {
+            //TODO show error
+            return;
+        }
         bestelling.deleteBroodje(item);
         broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad()+1);
         for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad()+1);
         setChanged();
         notifyObservers(BestellingEvent.REMOVE_BROODJE);
+    }
+
+    public void cancelOrder() {
+        //Put voorraad back
+        Iterator<Item> i = bestelling.getItems().iterator();
+
+        while (i.hasNext()) {
+            Item item = i.next();
+
+            i.remove();
+            broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad() + 1);
+            for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad() + 1);
+        }
+
+        bestelling = new Bestelling(nextOrderID);
+        nextOrderID++;
+
+        setChanged();
+        notifyObservers(BestellingEvent.CANCEL_ORDER);
     }
 }

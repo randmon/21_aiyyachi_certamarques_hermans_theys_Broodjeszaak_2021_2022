@@ -21,7 +21,6 @@ public class Bestelling {
         this.items = new LinkedHashSet<>();
         context = new BestellingContext();
         context.setState(new InWacht());
-        context.getState().doAction(context);
     }
 
     public int getId() {
@@ -34,13 +33,11 @@ public class Bestelling {
 
     public void addBroodje(Broodje broodje) {
         if (broodje.getVoorraad() < 1) throw new DomainException(broodje.getNaam() + " broodje is niet meer in voorraad!");
-
         items.add(new Item(broodje, new ArrayList<>()));
     }
 
     public void addBeleg(Item item, Beleg beleg) {
         if (beleg.getVoorraad() < 1) throw new DomainException(beleg.getNaam() + " is niet meer in voorraad!");
-
         item.addBeleg(beleg);
     }
 
@@ -67,5 +64,9 @@ public class Bestelling {
 
     public void deleteBroodje(Item item) {
         items.remove(item);
+    }
+
+    public BestellingContext getContext() {
+        return context;
     }
 }
