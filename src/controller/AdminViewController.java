@@ -1,16 +1,12 @@
 package controller;
 
 import model.BestelFacade;
-import model.database.filemanager.FileManagerStrategy;
 import model.domain.Beleg;
 import model.domain.Broodje;
 
 import model.domain.bestelling.BestellingEvent;
 import view.AdminView;
-import view.panels.SandwichOverviewPane;
-import view.panels.StatisticsPane;
 
-import java.io.FileReader;
 import java.util.*;
 
 public class AdminViewController implements Observer {
@@ -44,23 +40,23 @@ public class AdminViewController implements Observer {
         return model.getBeleg();
     }
 
-    public void saveVoorraad() {
-        model.saveVoorraad();
-    }
-
     public List<String> getFileStrategies() {
         return model.getFileStrategies();
     }
 
     public String getSaveStrategy(){
-        return model.getProperty("saveStrategy");
+        return model.getSaveStrategy();
     }
 
     public String getKortingStrategy(){
-        return model.getProperty("kortingStrategy");
+        return model.getKortingStrategy();
     }
 
-    public void setSaveStrategy(FileManagerStrategy fileManagerStrategy){
-        model.setSaveStrategy(fileManagerStrategy);
+    public void setProperties(Map<String, String> properties) {
+        model.setProperties(properties);
+    }
+
+    public List<String> getKortingStrategies() {
+        return model.getKortingLijst();
     }
 }

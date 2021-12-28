@@ -99,4 +99,8 @@ public class OrderViewController implements Observer {
     public List<String> getKortingLijst() {
         return model.getKortingLijst();
     }
+
+    public String getDefaultKorting() {
+        return model.getKortingStrategy();
+    }
 }

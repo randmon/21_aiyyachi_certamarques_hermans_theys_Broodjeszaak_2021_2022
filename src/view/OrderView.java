@@ -65,7 +65,7 @@ public class OrderView {
 		HBox kortingHBox = getHBox();
 		kortingChoice = new ComboBox<>();
 		kortingChoice.getItems().addAll(controller.getKortingLijst());
-		kortingChoice.getSelectionModel().selectFirst();
+		kortingChoice.getSelectionModel().select(controller.getDefaultKorting());
 		kortingChoice.setDisable(true);
 		kortingHBox.getChildren().add(kortingChoice);
 		grid.add(kortingHBox, 3,0,1,1);
@@ -86,7 +86,7 @@ public class OrderView {
 
 
 		//---FOOTER---
-		closeOrderButton = new Button("Afsluiten bestelling");
+		closeOrderButton = new Button("Afsluiten");
 		closeOrderButton.setDisable(true);
 		closeOrderButton.setCursor(Cursor.HAND);
 		grid.add(closeOrderButton, 0, 5, 1, 1);
@@ -141,7 +141,7 @@ public class OrderView {
 
 		//Stage
 		stage.setScene(scene);
-		stage.sizeToScene();			
+		stage.sizeToScene();
 		stage.show();
 	}
 
@@ -184,7 +184,7 @@ public class OrderView {
 		//Enable other buttons
 		closeOrderButton.setDisable(false);
 		kortingChoice.setDisable(false);
-		kortingChoice.getSelectionModel().selectFirst();
+		kortingChoice.getSelectionModel().select(controller.getDefaultKorting());
 		orderButtons.refreshButtons();
 		bestellingTablePane.disableButtons(false);
 

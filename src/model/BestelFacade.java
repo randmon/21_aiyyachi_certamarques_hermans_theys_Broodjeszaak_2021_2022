@@ -14,19 +14,21 @@ import model.domain.korting.Korting;
 import model.domain.korting.KortingEnum;
 import model.domain.korting.KortingFactory;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 public class BestelFacade extends Observable {
-    private BroodjesDB broodjesDB;
-    private BelegDB belegDB;
+    private final BroodjesDB broodjesDB;
+    private final BelegDB belegDB;
     private Bestelling bestelling, inKitchen;
-    private Deque<Bestelling> queue = new LinkedList<>();
+    private final Deque<Bestelling> queue = new LinkedList<>();
     private int nextOrderID;
 
-    public BestelFacade(String fileType) {
+    public BestelFacade() {
+        String fileType = getSaveStrategy();
         broodjesDB = BroodjesDB.getInstance(fileType);
         belegDB = BelegDB.getInstance(fileType);
         bestelling = new Bestelling(1);
@@ -175,17 +177,37 @@ public class BestelFacade extends Observable {
         return fileStrategyList;
     }
 
-    public String getProperty(String property) {
+    public String getSaveStrategy() {
+        return getProperty("saveStrategy");
+    }
+
+    public String getKortingStrategy() {
+        return getProperty("kortingStrategy");
+    }
+
+    private String getProperty(String property) {
         try {
             FileReader fileReader = new FileReader("src/bestanden/settings.properties");
             Properties properties = new Properties();
             properties.load(fileReader);
+            fileReader.close();
             return properties.getProperty(property);
         } catch (IOException e) {
             throw new DomainException("Error reading file");
         }
     }
 
-    public void setSaveStrategy(FileManagerStrategy fileManagerStrategy) {
+    public void setProperties(Map<String, String> properties) {
+        try {
+            Properties p = new Properties();
+            for(Map.Entry<String, String> entry : properties.entrySet()){
+                p.setProperty(entry.getKey(), entry.getValue());
+            }
+            FileWriter writer= new FileWriter("src/bestanden/settings.properties");
+            p.store(writer,null);
+            writer.close();
+        } catch (IOException e) {
+            throw new DomainException("Error reading file");
+        }
     }
 }

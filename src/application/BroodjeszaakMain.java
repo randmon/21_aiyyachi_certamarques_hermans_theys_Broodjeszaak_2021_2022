@@ -11,14 +11,11 @@ import view.KitchenView;
 import view.OrderView;
 
 public class BroodjeszaakMain extends Application {
-	String chooseFile = "TXT";
-	//String chooseFile = "EXCEL";
+	private final BestelFacade model = new BestelFacade();
 
-	BestelFacade model = new BestelFacade(chooseFile);
-
-	AdminViewController bCtrl = new AdminViewController(model);
-	OrderViewController oCtrl = new OrderViewController(model);
-	KitchenViewController kCtrl = new KitchenViewController(model);
+	private final AdminViewController bCtrl = new AdminViewController(model);
+	private final OrderViewController oCtrl = new OrderViewController(model);
+	private final KitchenViewController kCtrl = new KitchenViewController(model);
 
 	public static void main(String[] args) {
 		launch(args);
@@ -34,6 +31,6 @@ public class BroodjeszaakMain extends Application {
 	@Override
 	public void stop() throws Exception {
 		super.stop();
-		bCtrl.saveVoorraad();
+		model.saveVoorraad();
 	}
 }
