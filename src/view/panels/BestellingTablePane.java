@@ -119,18 +119,24 @@ public class BestellingTablePane extends VBox {
         Item itemToDuplicate = getSelectedItem();
         try {
             controller.addSameItem(itemToDuplicate);
-
         } catch (DomainException e ) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(e.getMessage());
-            alert.setTitle("Error Message");
-            alert.showAndWait();
+            showAlert(e.getMessage());
         }
     }
 
     private void deleteItem() {
         Item itemToDelete = getSelectedItem();
-        controller.deleteItem(itemToDelete);
+        try {
+            controller.deleteItem(itemToDelete);
+        } catch (DomainException e) {
+            showAlert(e.getMessage());
+        }
     }
 
+    public void showAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(s);
+        alert.setTitle("Error Message");
+        alert.showAndWait();
+    }
 }

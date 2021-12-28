@@ -8,6 +8,11 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.GridPane;
+import model.domain.Beleg;
+import model.domain.Broodje;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StatisticsPane extends GridPane {
     private AdminViewController controller;
@@ -19,24 +24,15 @@ public class StatisticsPane extends GridPane {
         this.setVgap(5);
         this.setHgap(5);
 
-        //BROODJES
+        //----BROODJES----
         NumberAxis broodjesXAxis = new NumberAxis();
         CategoryAxis broodjesYAxis = new CategoryAxis();
         broodjesChart = new BarChart<>(broodjesXAxis, broodjesYAxis);
         broodjesChart.setTitle("Omzetstatistiek broodjes (in aantal stuks)");
-
-        XYChart.Series<Number, String> broodjesData = new XYChart.Series<>();
-        broodjesData.getData().add(new XYChart.Data<>(12, "brood1"));
-        broodjesData.getData().add(new XYChart.Data<>(5, "brood2"));
-        broodjesData.getData().add(new XYChart.Data<>(13, "brood3"));
-        broodjesChart.getData().add(broodjesData);
         broodjesChart.setLegendVisible(false);
-        for(Node n:broodjesChart.lookupAll(".default-color0.chart-bar")) {
-            n.setStyle("-fx-bar-fill: LIGHTBLUE;");
-        }
         this.add(broodjesChart, 0, 0, 1, 1);
 
-        //BELEG
+        //----BELEG----
         NumberAxis belegXAxis = new NumberAxis();
         CategoryAxis belegYAxis = new CategoryAxis();
         belegChart = new BarChart<>(belegXAxis, belegYAxis);
@@ -52,15 +48,38 @@ public class StatisticsPane extends GridPane {
         belegData.getData().add(new XYChart.Data<>(16, "beleg7"));
         belegChart.getData().add(belegData);
         belegChart.setLegendVisible(false);
-        for(Node n:belegChart.lookupAll(".default-color0.chart-bar")) {
-            n.setStyle("-fx-bar-fill: ORANGE;");
-        }
+
         this.add(belegChart, 1, 0, 1, 1);
+
+        refreshData();
     }
 
     public void refreshData() {
-        //TODO get broodje statistics from controller
+        //BROODJES
+        List<Broodje> broodjes = new ArrayList<>(controller.getBroodjes().values());
+        for (Broodje b : broodjes) {
+            int value = b.getBesteld();
+            String name = b.getNaam();
+            XYChart.Series<Number, String> broodjesData = new XYChart.Series<>();
+            broodjesData.getData().add(new XYChart.Data<>(value, name));
+            broodjesChart.getData().add(broodjesData);
+        }
+        for(Node n:broodjesChart.lookupAll(".default-color0.chart-bar")) {
+            n.setStyle("-fx-bar-fill: LIGHTBLUE;");
+        }
 
-        //TODO get beleg statistics from controller
+        //BELEG
+        List<Beleg> belegList = new ArrayList<>(controller.getBeleg().values());
+        for (Beleg b : belegList){
+            int value = b.getBesteld();
+            String name = b.getNaam();
+            XYChart.Series<Number, String> belegData = new XYChart.Series<>();
+            belegData.getData().add(new XYChart.Data<>(value, name));
+            belegChart.getData().add(belegData);
+        }
+        for(Node n:belegChart.lookupAll(".default-color0.chart-bar")) {
+            n.setStyle("-fx-bar-fill: ORANGE;");
+        }
+
     }
 }

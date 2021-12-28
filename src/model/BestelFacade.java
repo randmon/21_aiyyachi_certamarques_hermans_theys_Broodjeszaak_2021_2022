@@ -8,7 +8,6 @@ import model.domain.DomainException;
 import model.domain.Item;
 import model.domain.bestelling.Bestelling;
 import model.domain.bestelling.BestellingEvent;
-import model.domain.bestelling.bestellingStates.InBestelling;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -41,22 +40,18 @@ public class BestelFacade extends Observable {
     }
 
     public void startNewOrder() {
-        bestelling.getContext().setState(new InBestelling());
+        bestelling.startOrder();
     }
 
     public int getOrderID() {
         return bestelling.getId();
     }
 
-    public void addNewItem(Broodje b) {
-        try {
-            bestelling.addBroodje(b);
-            broodjesDB.setVoorraad(b, b.getVoorraad() - 1);
-            setChanged();
-            notifyObservers(BestellingEvent.ADD_BROODJE);
-        } catch (DomainException d) {
-            System.out.println(d.getMessage());
-        }
+    public void addBroodje(Broodje b) {
+        bestelling.addBroodje(b);
+        broodjesDB.setVoorraad(b, b.getVoorraad() - 1);
+        setChanged();
+        notifyObservers(BestellingEvent.ADD_BROODJE);
     }
 
     public Bestelling getBestelling() {
@@ -73,17 +68,12 @@ public class BestelFacade extends Observable {
 
 
     public double calculatePrice() {
-        double total = 0;
-        for (Item i : bestelling.getItems()) {
-            total += i.calculatePrice();
-        }
-        return total;
+        return bestelling.getPrice();
     }
 
     public void addSameItem(Item item) {
         if (item == null) {
-            //TODO show error
-            return;
+            throw new DomainException("Item mag niet leeg zijn");
         }
         bestelling.addSameBroodje(item.getBroodje(), item.getBeleg());
         broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad() - 1);
@@ -95,10 +85,9 @@ public class BestelFacade extends Observable {
 
     public void deleteItem(Item item) {
         if (item == null) {
-            //TODO show error
-            return;
+            throw new DomainException("Item mag niet leeg zijn");
         }
-        bestelling.deleteBroodje(item);
+        bestelling.removeBroodje(item);
         broodjesDB.setVoorraad(item.getBroodje(), item.getBroodje().getVoorraad() + 1);
         for (Beleg b : item.getBeleg()) belegDB.setVoorraad(b, b.getVoorraad() + 1);
         setChanged();
@@ -122,5 +111,10 @@ public class BestelFacade extends Observable {
 
         setChanged();
         notifyObservers(BestellingEvent.CANCEL_ORDER);
+    }
+
+    public double closeOrder() {
+        bestelling.closeOrder();
+        return bestelling.getPrice();
     }
 }

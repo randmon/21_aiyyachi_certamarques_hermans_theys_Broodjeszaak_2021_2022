@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -16,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.domain.DomainException;
 import view.panels.BestellingTablePane;
 import view.panels.OrderButtonsPane;
 
@@ -180,7 +182,9 @@ public class OrderView {
 
 	public void closeOrder() {
 		//Calculate price and set label
-		double price = controller.calculatePrice();
+		try {
+			double price = controller.closeOrder();
+
 		prijsLabel.setText("€ " + Math.round(price * 100.0) / 100.0);
 
 		//Enable pay button
@@ -192,6 +196,12 @@ public class OrderView {
 		orderButtons.disableButtons(true);
 		bestellingTablePane.disableButtons(true);
 		bestellingTablePane.getCancelOrderButton().setDisable(false);
+		} catch (DomainException e) {
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.setHeaderText(e.getMessage());
+			alert.setTitle("Error!");
+			alert.showAndWait();
+		}
 	}
 
 	public void cancelOrder() {

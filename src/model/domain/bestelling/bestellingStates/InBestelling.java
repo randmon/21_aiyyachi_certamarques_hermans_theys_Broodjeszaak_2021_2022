@@ -1,20 +1,40 @@
 package model.domain.bestelling.bestellingStates;
 
-import model.domain.Broodje;
 import model.domain.bestelling.BestellingContext;
 
 public class InBestelling implements BestellingState {
-    public InBestelling() {
-
+    @Override
+    public void addBroodje(BestellingContext context) {
+        return;
     }
 
     @Override
-    public void addBroodje(Broodje broodje, BestellingContext context) {
-        //TODO voer uit
+    public void addBeleg(BestellingContext context) {
+        return;
     }
 
     @Override
-    public void addBeleg() {
-        BestellingState.super.addBeleg();
+    public void addSameBroodje(BestellingContext context) {
+        return;
+    }
+
+    @Override
+    public void verwijderBroodje(BestellingContext context) {
+        return;
+    }
+
+    @Override
+    public void afsluiten(BestellingContext context) {
+        context.setState(new Afgesloten());
+    }
+
+    @Override
+    public void annuleren(BestellingContext context) {
+        context.setState(new Canceled());
+    }
+
+    @Override
+    public String toString() {
+        return "in bestelling";
     }
 }

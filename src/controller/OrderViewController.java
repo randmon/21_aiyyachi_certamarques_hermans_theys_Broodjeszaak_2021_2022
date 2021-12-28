@@ -8,7 +8,6 @@ import model.domain.bestelling.Bestelling;
 import model.domain.bestelling.BestellingEvent;
 import view.OrderView;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class OrderViewController implements Observer {
@@ -61,7 +60,7 @@ public class OrderViewController implements Observer {
     }
 
     public void addBroodje(Broodje b) {
-        model.addNewItem(b);
+        model.addBroodje(b);
     }
 
     public Bestelling getBestelling() {
@@ -70,10 +69,6 @@ public class OrderViewController implements Observer {
 
     public void addBelegToItem(Item item, Beleg beleg) {
         model.addBeleg(item, beleg);
-    }
-
-    public double calculatePrice() {
-        return model.calculatePrice();
     }
 
     public void addSameItem(Item selectedItem) {
@@ -86,5 +81,9 @@ public class OrderViewController implements Observer {
 
     public void cancelOrder() {
         model.cancelOrder();
+    }
+
+    public double closeOrder() {
+        return model.closeOrder();
     }
 }

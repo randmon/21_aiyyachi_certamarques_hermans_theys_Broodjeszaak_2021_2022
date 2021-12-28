@@ -4,7 +4,6 @@ import model.domain.Beleg;
 import model.domain.Broodje;
 import model.domain.DomainException;
 import model.domain.Item;
-import model.domain.bestelling.bestellingStates.InWacht;
 
 import java.util.*;
 
@@ -20,7 +19,6 @@ public class Bestelling {
         this.id = id;
         this.items = new LinkedHashSet<>();
         context = new BestellingContext();
-        context.setState(new InWacht());
     }
 
     public int getId() {
@@ -31,17 +29,27 @@ public class Bestelling {
         return items;
     }
 
+    public void startOrder() {
+        context.getState().start(context);
+    }
+
     public void addBroodje(Broodje broodje) {
+        context.getState().addBroodje(context);
+
         if (broodje.getVoorraad() < 1) throw new DomainException(broodje.getNaam() + " broodje is niet meer in voorraad!");
         items.add(new Item(broodje, new ArrayList<>()));
     }
 
     public void addBeleg(Item item, Beleg beleg) {
+        context.getState().addBeleg(context);
+
         if (beleg.getVoorraad() < 1) throw new DomainException(beleg.getNaam() + " is niet meer in voorraad!");
         item.addBeleg(beleg);
     }
 
     public void addSameBroodje(Broodje broodje, List<Beleg> beleg) {
+        context.getState().addSameBroodje(context);
+
         Item item = new Item(broodje, new ArrayList<>(beleg));
 
         //Check if it is possible to add all the ingredients
@@ -62,11 +70,40 @@ public class Bestelling {
         items.add(item);
     }
 
-    public void deleteBroodje(Item item) {
+    public void removeBroodje(Item item) {
+        context.getState().verwijderBroodje(context);
         items.remove(item);
     }
 
-    public BestellingContext getContext() {
-        return context;
+    public void closeOrder() {
+        context.getState().afsluiten(context);
+    }
+
+    public double getPrice() {
+        double total = 0;
+        for (Item i : items) {
+            total += i.calculatePrice();
+        }
+        return total;
+    }
+
+    public void cancelOrder() {
+        context.getState().annuleren(context);
+    }
+
+    public void payOrder() {
+        context.getState().betaal(context);
+    }
+
+    public void sendToKitchen() {
+        context.getState().zendNaarKeuken(context);
+    }
+
+    public void startBereiding() {
+        context.getState().startBereiding(context);
+    }
+
+    public void finishOrder() {
+        context.getState().afwerken(context);
     }
 }

@@ -4,11 +4,13 @@ import controller.OrderViewController;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import model.domain.Beleg;
 import model.domain.Broodje;
+import model.domain.DomainException;
 import model.domain.Item;
 
 import java.util.List;
@@ -46,8 +48,12 @@ public class OrderButtonsPane extends VBox {
                Button button = new Button(broodje.getNaam());
 
                button.setOnAction(event -> {
-                   controller.addBroodje(broodje);
-                   bestellingTablePane.selectLast();
+                   try {
+                       controller.addBroodje(broodje);
+                       bestellingTablePane.selectLast();
+                   } catch (DomainException e) {
+                       showAlert(e.getMessage());
+                   }
                });
 
                button.setCursor(Cursor.HAND);
@@ -60,14 +66,16 @@ public class OrderButtonsPane extends VBox {
 
         for(Beleg beleg : belegList){
             Button button = new Button(beleg.getNaam());
-
-
             //Add to the Item object in that line the beleg that we clicked on
             button.setOnAction(event -> {
                 //Get selected item in the table
                 Item selectedItem = bestellingTablePane.getSelectedItem();
 
-                controller.addBelegToItem(selectedItem, beleg);
+                try {
+                    controller.addBelegToItem(selectedItem, beleg);
+                } catch (DomainException e) {
+                    showAlert(e.getMessage());
+                }
             });
 
             button.setCursor(Cursor.HAND);
@@ -93,5 +101,10 @@ public class OrderButtonsPane extends VBox {
         }
     }
 
-
+    public void showAlert(String s) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(s);
+        alert.setTitle("Error Message");
+        alert.showAndWait();
+    }
 }
