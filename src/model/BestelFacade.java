@@ -119,7 +119,7 @@ public class BestelFacade extends Observable {
     }
 
     public double closeOrder(String korting) {
-        Korting k = KortingFactory.getKorting(korting);
+        Korting k = KortingFactory.getInstance().getKorting(korting);
         bestelling.closeOrder();
         return k.berekenKorting(bestelling);
     }

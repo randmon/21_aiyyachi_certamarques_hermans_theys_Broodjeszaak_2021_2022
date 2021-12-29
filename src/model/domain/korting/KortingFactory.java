@@ -1,9 +1,12 @@
 package model.domain.korting;
 
+import model.database.filemanager.BroodjesFileManagerStrategyFactory;
 import model.domain.DomainException;
 
 public class KortingFactory {
-    public static Korting getKorting(String text) {
+    public static KortingFactory instance;
+
+    public Korting getKorting(String text) {
         KortingEnum kortingEnum = null;
         for (KortingEnum k : KortingEnum.values()){
             if (k.getText().equals(text)) {
@@ -19,5 +22,11 @@ public class KortingFactory {
         } catch (Exception e) {
             throw new DomainException("Ongeldige korting");
         }
+    }
+
+    //Singleton pattern
+    public static KortingFactory getInstance() {
+        if(instance == null) instance = new KortingFactory();
+        return instance;
     }
 }
